@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Billett – Larvik Rockeklubb</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  margin: 0;
+  text-align: center;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto 80px auto;
+  padding: 0 10px 40px 10px;
+}
+
+#statusBox {
+  max-width: 900px;
+  margin: 20px auto 25px auto;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #fff;
+  background: #28a745;
+  display: none;
+}
+
+/* HEADER */
+header {
+  background: #1a1a1a;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e63946;
+  position: relative;
+  z-index: 10;
+}
+
+header img { max-height:90px; }
+.logo-left { max-height:90px; }
+.logo-center {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:30px;
+  max-height:45px;
+  filter: drop-shadow(0 0 3px rgba(180,200,255,0.6))
+          drop-shadow(0 0 8px rgba(200,220,255,0.7));
+  animation: glowWhiteCool 6s ease-in-out infinite;
+}
+
+/* Kald hvit neonglød */
+@keyframes glowWhiteCool {
+  0% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+  50% { filter: drop-shadow(0 0 6px rgba(200,230,255,0.9)) drop-shadow(0 0 14px rgba(210,240,255,1)); }
+  100% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+}
+
+/* BURGERMENY */
+.burger {
+  cursor: pointer;
+  width: 25px;
+  height: 18px;
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  z-index: 100;
+}
+.burger span {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #e63946;
+  border-radius: 2px;
+  left: 0;
+  transition: 0.3s;
+}
+.burger span:nth-child(1) { top: 0; }
+.burger span:nth-child(2) { top: 9px; }
+.burger span:nth-child(3) { top: 18px; }
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  background: #1a1a1a;
+  border: 2px solid #e63946;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1000;
+}
+.menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #eee;
+  text-decoration: none;
+}
+.menu a:hover {
+  background: #e63946;
+  color: #111;
+}
+.show { display: block; }
+
+#billetter-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0 40px 0;
+  background: #1a1a1a;
+  border-radius: 10px;
+  box-shadow: 0 0 60px rgba(228, 32, 32, 0.4);
+}
+
+#billetter {
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.billett {
+  position: relative;
+  width: 700px;
+  height: 230px;
+  margin: 25px auto;
+  background: url("/assets/Billett.png") no-repeat center / cover;
+  border: 2px solid #111;
+  box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+}
+
+.text {
+  position: absolute;
+  white-space: nowrap;
+  color: #000;
+  font-size: 13px;
+}
+
+.midt {
+  font-family: "burnabystencil", Helvetica, Arial, sans-serif;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reftext { font-family: Helvetica, Arial, sans-serif !important; font-size: 12px !important; }
+
+.qr { position: absolute; width: 120px; height: 120px; }
+.qr img { pointer-events: none; }
+
+.actions { max-width: 900px; margin: 0 auto; text-align: center; }
+
+button {
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(180deg, #2a2a2a 0%, #101010 100%);
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  border-top: 2px solid #e63946;
+  color: #aaa;
+  background: #1a1a1a;
+}
+
+@media (max-width:768px){ .arr-detaljer{flex-direction:column;} 
+main img{width:90%;}}
+html{overflow-y:scroll;}
+
+
+.social-icons {
+  position: absolute;
+  top: 80%;
+  right: 110px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.social-icons img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+/* Skjul sosiale medier når menyen er åpen */
+.menu.show ~ .social-icons { display: none; }
+
+/* ★ TENKEKLOKKE (LOADING OVERLAY) ★ */
+    #loadingOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .spinner {
+      border: 6px solid #444;
+      border-top: 6px solid #e63946;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+@font-face { font-family: "BurnabyStencil";
+src: url("font/burnaby_stencil.woff") format("woff");
+font-display: swap; }
+
+.eventid-label { font-weight: bold; }
+.eventid-value { font-weight: normal; }
+
+* { box-sizing: border-box; scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<header>
+  <img src="assets/logo_left.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="assets/logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_betalling.html" onclick="toggleMenu()">Tilbake</a>
+  </nav>
+  <div class="social-icons">
+    <a href="#"><img src="assets/facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="assets/instagram.png" alt="Instagram"></a>
+  </div>
+  </header>
+<body><body>
+  
+  <div id="loadingOverlay">
+    <div>
+      <div class="spinner"></div>
+      Genererer PDF…<br>Vennligst vent
+    </div>
+  </div>
+
+  <main>
+    <div id="statusBox"></div>
+
+    <div id="billetter-wrapper">
+      <div id="billetter"></div>
+    </div>
+
+    <div class="actions">
+      <button id="pdfBtn">LAST NED PDF</button>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.
+  </footer>
+
+<!-- PDF / Bilde / QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="./qr.js"></script>
+  
+<script>
+const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
+
+const params = new URLSearchParams(location.search);
+const orderId = params.get("orderId");
+
+const statusBox = document.getElementById("statusBox");
+const billettContainer = document.getElementById("billetter");
+
+if (!orderId) {
+  statusBox.style.display = "block";
+  statusBox.style.background = "#dc3545";
+  statusBox.textContent = "Mangler orderId i URL.";
+} else {
+  loadTickets(orderId);
+}
+
+async function loadTickets(orderId) {
+  try {
+     const res = await fetch(`${API_BASE}/api/tickets/order/${orderId}`);
+    if (!res.ok) throw new Error();
+
+    const data = await res.json();
+    if (!data || data.status !== "ok") throw new Error();
+
+    const event = data.event;
+    const order = data.order || {};
+    const tickets = data.tickets || [];
+
+    billettContainer.innerHTML = "";
+
+    const today = new Date().toLocaleDateString("no-NO");
+    const dateFormatted = new Date(event.date).toLocaleDateString("no-NO");
+
+    tickets.forEach((ticket, i) => {
+      const navn =
+        ticket.name ||
+        order.buyer_name ||
+        order.name ||
+        "";
+
+      const b = document.createElement("div");
+      b.className = "billett";
+
+b.innerHTML = `
+  <div class="text" data-field="billettnr">
+    <span style="font-weight:700;">Billettnr:</span>
+    <span style="font-weight:400;"> ${ticket.ticket_code}</span>
+  </div>
+
+  <div class="text" data-field="navn">
+    <span style="font-weight:700;">Navn:</span>
+    <span style="font-weight:400;"> ${navn}</span>
+  </div>
+
+  <div class="text" data-field="pris">
+    <span style="font-weight:700;">Pris:</span>
+    <span style="font-weight:400;"> ${ticket.price}</span>
+  </div>
+
+  <div class="text" data-field="dato">
+    <span style="font-weight:700;">Dato:</span>
+    <span style="font-weight:400;"> ${today}</span>
+  </div>
+
+  <div class="text midt" data-field="band">${event.title}</div>
+  <div class="text midt" data-field="tour">${event.description}</div>
+  <div class="text midt" data-field="venue">${event.venue}</div>
+  <div class="text midt" data-field="date">${dateFormatted} – ${event.time}</div>
+
+  <div class="text midt reftext" data-field="reftext">
+    Kjøpt billett refunderes ikke.
+  </div>
+
+  <div class="text" data-field="eventid">
+    <span style="font-weight:700;">Event-ID:</span>
+    <span style="font-weight:400;"> ${event.id}</span>
+  </div>
+
+  <div class="text" data-field="site">www.larvik-rockeklubb.no</div>
+  <div class="qr" data-field="qr" id="qr-${i}"></div>
+`;
+
+billettContainer.appendChild(b);
+
+      new QRCode(document.getElementById(`qr-${i}`), {
+      text: `${ticket.ticket_code} | ${navn} | ${event.id}`,
+        width: 120,
+        height: 120
+      });
+    });
+
+    applyLayout();
+
+  } catch {
+    statusBox.style.display = "block";
+    statusBox.style.background = "#dc3545";
+    statusBox.textContent = "En feil oppstod ved lasting av billett.";
+  }
+}
+
+async function applyLayout() {
+  const res = await fetch("json/billett_layout.json");
+  const layout = await res.json();
+
+  document.querySelectorAll("[data-field]").forEach(el => {
+    const cfg = layout[el.dataset.field];
+    if (!cfg) return;
+
+    if (cfg.top) el.style.top = cfg.top;
+    if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
+
+    // kun IKKE-midt felt kan få left/right
+    if (!el.classList.contains("midt")) {
+      if (cfg.left) el.style.left = cfg.left;
+      if (cfg.right) el.style.right = cfg.right;
+    }
+  });
+}
+
+
+const pdfButton = document.querySelector("button");
+
+  if (pdfButton) {
+    pdfButton.addEventListener("click", () => {
+      if (!orderId) {
+        alert("Mangler orderId");
+        return;
+      }
+
+      window.open(
+        `http://localhost:3001/api/pdf/ticket/${orderId}`,
+        "_blank"
+      );
+    });
+  }
+</script>
+
+</head>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stor Produksjon – Larvik Rockeklubb Utleie</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+header {
+  background: #1a1a1a;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e63946;
+  position: relative;
+  z-index: 10;
+}
+header img { max-height: 90px; }
+.logo-left { max-height: 90px; }
+.logo-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 30px;
+  max-height: 45px;
+}
+
+/* --- BURGER MENY --- */
+.burger {
+  cursor: pointer;
+  width: 25px;
+  height: 18px;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  top: auto;
+  z-index: 100;
+}
+.burger span {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #e63946;
+  border-radius: 2px;
+  left: 0;
+  transition: 0.3s;
+}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:9px;}
+.burger span:nth-child(3){top:18px;}
+.menu {
+  display: none;
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  background: #1a1a1a;
+  border: 2px solid #e63946;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #eee;
+  text-decoration: none;
+}
+.menu a:hover { background: #e63946; color: #111; }
+.show { display: block; }
+
+/* --- UTLEIE-SEKSJON --- */
+.utleie {
+  max-width: 900px;
+  margin: 50px auto 120px;
+  padding: 40px 100px 100px 100px;
+  position: relative;
+  background: #141414;
+  border-radius: 12px;
+  box-shadow: 0 0 60px rgba(228, 32, 32, 0.43);
+  backdrop-filter: blur(3px);
+  min-height: 550px;
+  overflow: hidden;
+}
+
+.utleie h1 {
+  position: relative;
+  top: -40px;
+  text-align: center;
+  color: #fff;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 70px;
+}
+
+/* --- BILDE --- */
+.utleie-bilde {
+  position: absolute;
+  top: 180px;
+  left: 60px;
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+.utleie-bilde img {
+  width: 500px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(230,57,70,0.25);
+  pointer-events: auto;
+}
+
+/* --- TEKST --- */
+.utleie-tekst {
+  position: absolute;
+  top: 180px;
+  right: 70px;
+  width: 380px;
+  text-align: left;
+  color: #ddd;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+.utleie-tekst h2 {
+  color: #fff;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+.utleie-tekst ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+}
+.utleie-tekst li { margin-bottom: 6px; }
+
+/* --- KNAPP (nederst) --- */
+button, .btn, .btn-standard, .utleie-btn, a.knapp, input[type="submit"] {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(180deg, #2a2a2a 0%, #101010 100%);
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+button:hover, .btn:hover, .btn-standard:hover, .utleie-btn:hover, 
+a.knapp:hover, input[type="submit"]:hover {
+  color: #f5f5f5;
+  background: linear-gradient(180deg, #343434 0%, #151515 100%);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.9),
+    0 0 10px rgba(255,255,255,0.25),
+    0 0 12px rgba(255,255,255,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+}
+
+button:active, .btn:active, .btn-standard:active, .utleie-btn:active, 
+a.knapp:active, input[type="submit"]:active {
+  background: linear-gradient(180deg, #1a1a1a 0%, #050505 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.8),
+    inset 0 -1px 0 rgba(255,255,255,0.1),
+    0 0 5px rgba(230,57,70,0.5);
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align: center;
+  padding: 15px;
+  border-top: 2px solid #e63946;
+  margin-top: 50px;
+  color: #aaa;
+}
+
+/* --- MOBIL --- */
+@media (max-width: 768px) {
+  .utleie {
+    margin: 80px 15px;
+    padding: 30px 15px 120px;
+  }
+  .utleie-bilde, .utleie-tekst {
+    position: static;
+    width: 100%;
+    text-align: center;
+  }
+  .utleie-bilde img { max-width: 80%; }
+}
+
+/* --- FULLSKJERM-BILDE VISNING --- */
+#fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: background 0.4s ease, opacity 0.4s ease;
+  display: flex;
+}
+#fullscreenOverlay img { 
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+  cursor: zoom-out;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+#fullscreenOverlay.show {
+  background: rgba(0,0,0,0.9);
+  opacity: 1;
+  pointer-events: auto;
+}
+#fullscreenOverlay.show img {
+  transform: scale(1);
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <img src="logo_vekter.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_utleie.html" onclick="toggleMenu()">Tilbake</a>
+  </nav>
+</header>
+
+<section class="utleie">
+  <h1>Stor Produksjon</h1>
+
+  <div class="utleie-bilde">
+    <img src="storpro.png" alt="stor produksjon pakke">
+  </div>
+
+  <div class="utleie-tekst">
+    <h2>Pakken inneholder</h2>
+    <ul>
+      <li>2 stk: HK Audio L9 høyttaler</li>
+      <li>4 stk: HK Audio L5 subwoofer</li>
+      <li>4 stk: HK Audio L3 monitor</li>
+      <li>1 stk: A&H SQ6 mixebord</li>
+      <li>1 stk: A&H AR2412</li>
+    </ul>
+    <p>For større arrangementer, konserter og produksjoner med høyere lyd- og lyskrav.
+       Denne pakken dekker alt du trenger for et profesjonelt oppsett.</p>
+  </div>
+
+  <div class="utleie-knapp" style="position:absolute;bottom:40px;right:100px;">
+    <a href="mailto:post@larvikrockeklubb.no" class="btn">Send forespørsel</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.
+</footer>
+
+<div id="fullscreenOverlay">
+  <img id="fullscreenImage" src="" alt="">
+</div>
+
+<script>
+function toggleMenu(){
+  document.getElementById("dropdownMenu").classList.toggle("show");
+}
+
+/* === Fullskjerm-bilde-funksjon === */
+const bilde = document.querySelector('.utleie-bilde img');
+const overlay = document.getElementById('fullscreenOverlay');
+const fullscreenImg = document.getElementById('fullscreenImage');
+
+bilde.addEventListener('dblclick', () => {
+  fullscreenImg.src = bilde.src;
+  overlay.classList.add('show');
+});
+overlay.addEventListener('click', () => overlay.classList.remove('show'));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') overlay.classList.remove('show');
+});
+</script>
+</body>
+</html>

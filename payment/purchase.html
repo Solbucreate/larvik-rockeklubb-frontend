@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kjøp billett</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="purchase-container">
+    <h1>Kjøp billetter</h1>
+
+    <label>Antall billetter:</label>
+    <input id="qty" type="number" min="1" value="1" />
+
+    <label>Epost for billett:</label>
+    <input id="email" type="email" placeholder="din@epost.no" />
+
+    <label>Betaling:</label>
+    <select id="payment-method">
+      <option value="vipps">Vipps</option>
+      <option value="stripe">Kort</option>
+    </select>
+
+    <button onclick="startPurchase()">Fortsett</button>
+
+    <p id="status"></p>
+  </div>
+
+  <script src="js/purchase.js"></script>
+</body>
+</html>

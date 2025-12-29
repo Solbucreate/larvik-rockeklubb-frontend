@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Larvik Rockeklubb</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  margin: 0;
+}
+
+/* --- HEADER --- */
+header {
+  background: hsl(0, 0%, 10%);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e63946;
+  position: relative;
+}
+header img { max-height: 90px; }
+.logo-left { max-height: 90px; }
+.logo-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 30px;
+  max-height: 45px;
+  filter: drop-shadow(0 0 3px rgba(180,200,255,0.6))
+          drop-shadow(0 0 8px rgba(200,220,255,0.7));
+  animation: glowWhiteCool 6s ease-in-out infinite;
+}
+
+/* Kald hvit neonglød */
+@keyframes glowWhiteCool {
+  0% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+  50% { filter: drop-shadow(0 0 6px rgba(200,230,255,0.9)) drop-shadow(0 0 14px rgba(210,240,255,1)); }
+  100% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+}
+
+/* --- HERO --- */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: url('https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  color: #fff;
+}
+.hero h1 { font-size: 48px; text-shadow: 2px 2px 6px #000; margin-bottom: 20px; }
+.hero p { font-size: 20px; text-shadow: 1px 1px 4px #000; }
+
+section { padding: 40px 20px; max-width: 900px; margin: auto; }
+
+/* --- ARRANGEMENTER --- */
+#arrangementer {
+  text-align: center;
+  margin: 40px auto;
+}
+#arrangementer h2 {
+  margin-top: 0;
+  margin-bottom: 50px;
+  font-size: 1.8em;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255,255,255,0.35);
+}
+.arrangement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: fit-content;
+  margin: 60px auto;
+  text-decoration: none;
+  color: #fff;
+}
+.arrangement img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(170,170,170,0.18);
+  transition: box-shadow 0.3s ease;
+}
+.arrangement-info {
+  text-align: center;
+  line-height: 1.3;
+  text-shadow: 0 0 10px rgba(210,210,210,0.45), 0 0 18px rgba(255,255,255,0.25);
+  transition: text-shadow 0.3s ease;
+}
+.arrangement-info h3 { font-size: 1.25em; font-weight: bold; margin: 0; }
+.arrangement-info p { font-size: 1.05em; margin: 6px 0 0; color: #eee; }
+.arrangement:hover img { box-shadow: 0 0 10px rgba(200,200,200,0.3), 0 0 16px rgba(255,255,255,0.15); }
+.arrangement:hover .arrangement-info { text-shadow: 0 0 14px rgba(255,255,255,0.7), 0 0 24px rgba(200,200,200,0.45); }
+
+/* --- NYHETSBREV --- */
+#nyhetsbrev {
+  background: #111;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+#nyhetsbrev .container {
+  text-align: center;
+  width: 100%;
+  max-width: 350px;
+}
+#nyhetsbrev h2 {
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+#nyhetsbrev form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+#nyhetsbrev input[type="email"] {
+  width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #1a1a1a 0%, #080808 100%);
+  color: #eee;
+  font-size: 0.95em;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.7);
+  transition: all 0.25s ease;
+}
+#nyhetsbrev input[type="email"]:focus {
+  outline: none;
+  border-color: #e63946;
+  box-shadow: 0 0 10px rgba(230,57,70,0.5);
+}
+
+/* --- NYHETSBREV-KNAPP (3D) --- */
+#nyhetsbrev button {
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(180deg, #2a2a2a 0%, #101010 100%);
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+#nyhetsbrev button:hover {
+  color: #f5f5f5;
+  background: linear-gradient(180deg, #343434 0%, #151515 100%);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.9),
+    0 0 10px rgba(255,255,255,0.25),
+    0 0 12px rgba(255,255,255,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+#nyhetsbrev button:active {
+  background: linear-gradient(180deg, #1a1a1a 0%, #050505 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.8),
+    inset 0 -1px 0 rgba(255,255,255,0.1),
+    0 0 5px rgba(230,57,70,0.5);
+  transform: translateY(1px);
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align: center;
+  padding: 15px;
+  border-top: 2px solid #e63946;
+  margin-top: 50px;
+  color: #aaa;
+}
+
+/* --- BURGERMENY & SOSIALE MEDIER --- */
+.burger {
+  cursor: pointer;
+  width: 25px;
+  height: 18px;
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  z-index: 100;
+}
+.burger span {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #e63946;
+  border-radius: 2px;
+  left: 0;
+  transition: 0.3s;
+}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:9px;}
+.burger span:nth-child(3){top:18px;}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  background: #1a1a1a;
+  border: 2px solid #e63946;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #eee;
+  text-decoration: none;
+}
+.menu a:hover { background: #e63946; color: #111; }
+.show { display: block; }
+
+.social-icons {
+  position: absolute;
+  top: 80%;
+  right: 110px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.social-icons img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+/* Skjul sosiale medier når menyen er åpen */
+.menu.show ~ .social-icons { display: none; }
+</style>
+</head>
+
+<body>
+<header>
+  <img src="assets/logo_left.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="assets/logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_om.html" onclick="toggleMenu()">Om oss</a>
+    <a href="index_frivillig.html" onclick="toggleMenu()">RK Frivillig</a>
+    <a href="index_artister.html" onclick="toggleMenu()">Tidligere Artister</a>
+    <a href="index_tech.html" onclick="toggleMenu()">Tech Spec / Utstyr</a>
+    <a href="index_utleie.html" onclick="toggleMenu()">Utleie</a>
+  </nav>
+  <div class="social-icons">
+    <a href="#"><img src="assets/facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="assets/instagram.png" alt="Instagram"></a>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Velkommen til Larvik Rockeklubb</h1>
+  <p>Opplev rockmusikk og klubbstemning i Larvik!</p>
+</section>
+
+<section id="arrangementer">
+  <h2>Kommende arrangementer</h2>
+  
+  <div id="events"></div>
+</section>
+
+<section id="nyhetsbrev">
+  <div class="container">
+    <h2>Meld deg på vårt nyhetsbrev</h2>
+    <form action="#" method="post">
+      <input type="email" name="EMAIL" placeholder="Din e-post" required>
+      <button type="submit">Meld</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById("dropdownMenu").classList.toggle("show");
+}
+</script>
+
+<script>
+fetch("https://larvik-rockeklubb-backend.onrender.com/events")
+  .then(res => res.json())
+  .then(events => {
+    const box = document.getElementById("events");
+    box.innerHTML = "";
+
+    events.forEach(e => {
+      box.innerHTML += `
+        <div class="event">
+          <h3>${e.title}</h3>
+          <p>${e.venue}, ${e.city}</p>
+          <p>${e.event_date}</p>
+          <p>${e.price} kr</p>
+          <a href="index_kjop_billett.html?event_id=${e.id}">
+            Kjøp billett
+          </a>
+        </div>
+      `;
+    });
+  });
+
+src="js/events.js"
+
+</script>
+
+
+
+</body>
+</html>

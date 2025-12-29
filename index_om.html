@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Om Oss – Larvik Rockeklubb</title>
+
+<style>
+body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; position: relative; overflow-x: hidden;}
+header { background: #1a1a1a; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #e63946; position: relative; z-index: 10; }
+header img { max-height: 90px; }
+.logo-left { max-height: 90px; }
+.logo-center { position: absolute; left: 50%; transform: translateX(-50%); top: 30px; max-height: 45px;}
+
+.burger { cursor: pointer; width: 25px; height: 18px; position: absolute; right: 20px; bottom: 15px; top: auto; z-index: 100;}
+.burger span { position: absolute; height: 4px; width: 100%; background: #e63946; border-radius: 2px; left: 0; transition: 0.3s;}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:9px;}
+.burger span:nth-child(3){top:18px;}
+
+.menu { display: none; position: absolute; top: 75px; right: 20px; background: #1a1a1a; border: 2px solid #e63946; border-radius: 6px; overflow: hidden;}
+.menu a { display: block; padding: 10px 20px; color: #eee; text-decoration: none;}
+.menu a:hover { background: #e63946; color: #111;}
+.show { display: block; }
+
+/* --- Main content --- */
+main { 
+max-width: 900px; margin: 50px auto 120px; 
+padding: 40px; position: relative; z-index: 2;
+background: rgba(20,20,20,0.85); border-radius: 12px; 
+box-shadow: 0 0 60px rgba(228, 32, 32, 0.432);
+backdrop-filter: blur(3px);
+min-height: 300px;}
+
+main * { position: relative; z-index: 1;}
+h1 { text-align: center; color: #fff; font-size: 2rem; margin-top: -20px;margin-bottom: 50px; letter-spacing: 1px; text-transform: uppercase;}
+h2 { color: #fff; border-left: 3px solid #e63946; padding-left: 10px; margin-top: 60px; text-transform: uppercase;}
+p { line-height: 1.6; font-size: 1.05rem; margin-bottom: 15px;}
+
+footer { text-align: center; padding: 15px; border-top: 2px solid #e63946; margin-top: 50px; color: #aaa;}
+
+@media (max-width: 768px) { main { margin: 80px 15px; } h1 { font-size: 1.7rem; } main::before { background-size: 300px; }}
+</style>
+</head>
+
+<body>
+<header>
+  <img src="logo_vekter.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_om.html" onclick="toggleMenu()">Om oss</a>
+    <a href="index_frivillig.html" onclick="toggleMenu()">RK Frivillig</a>
+    <a href="index_artister.html" onclick="toggleMenu()">Tidligere Artister</a>
+    <a href="index_tech.html" onclick="toggleMenu()">Tech Spec / Utstyr</a>
+    <a href="index_utleie.html" onclick="toggleMenu()">Utleie</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Om Oss</h1>
+
+  <p><strong>Larvik Rockeklubb</strong> ble startet av musikkglade ildsjeler med ett mål – å gi rocken et levende hjem i Larvik. Her samles musikere, lydteknikere og publikum for å dele lidenskapen for tung lyd, ekte energi og klubbfølelse.</p>
+
+  <p>Vi arrangerer konserter, klubbkvelder og prosjekter som bygger fellesskap og fremmer den lokale musikkscenen. Med fokus på kvalitet, lyd og lys, skaper vi opplevelser som sitter i kroppen lenge etter siste riff.</p>
+
+  <h2>Vår filosofi</h2>
+  <p>Rock skal kjennes. Den skal vibrere i gulvet, løfte rommet og samle mennesker. Derfor setter vi både artister og publikum i sentrum, og bygger hver konsert med lidenskap, presisjon og ekte klubbånd.</p>
+
+  <h2>Bli en del av miljøet</h2>
+  <p>Vil du bidra, lære eller bare være en del av scenen? Bli frivillig, medlem eller samarbeidspartner – og vær med på å holde rocken levende i Larvik.</p>
+</main>
+
+<footer>
+  &copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.
+</footer>
+
+<script>
+function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle("show"); }
+</script>
+</body>
+</html>

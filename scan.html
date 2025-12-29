@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>QR Billettskanner</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      margin: 0;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    #eventSelect {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 6px;
+    }
+    #reader {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      border: 2px solid #333;
+      border-radius: 10px;
+    }
+    #resultBox {
+      margin-top: 20px;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      border-radius: 10px;
+      display: inline-block;
+      min-width: 260px;
+    }
+    .success {
+      background: #0a0;
+      color: black;
+    }
+    .error {
+      background: #a00;
+      color: white;
+    }
+  </style>
+
+  <!-- QR code kamerabibliotek -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+
+  <h1>🎫 QR-Billettskanner</h1>
+
+  <h3>Velg arrangement:</h3>
+  <select id="eventSelect">
+    <option>Henter arrangementer ...</option>
+  </select>
+
+  <div id="reader"></div>
+
+  <div id="resultBox">Ingen scanning enda…</div>
+
+  <script>
+    const API = "https://rockeklubb-web-backend.onrender.com/api";
+
+    // 1. Hent events
+    async function loadEvents() {
+      try {
+        const res = await fetch(API + "/events");
+        const events = await res.json();
+
+        const dropdown = document.getElementById("eventSelect");
+        dropdown.innerHTML = "";
+
+        events.forEach(evt => {
+          const opt = document.createElement("option");
+          opt.value = evt.id;
+          opt.textContent = `${evt.title} – ${evt.date}`;
+          dropdown.appendChild(opt);
+        });
+
+      } catch (err) {
+        alert("Kunne ikke laste events");
+      }
+    }
+
+    loadEvents();
+
+    // 2. Resultatboks
+    function showResult(msg, ok = false) {
+      const box = document.getElementById("resultBox");
+      box.textContent = msg;
+      box.className = ok ? "success" : "error";
+
+      if (ok && navigator.vibrate) navigator.vibrate(150);
+    }
+
+    // 3. Start QR scanner
+    function startScanner() {
+      const qr = new Html5Qrcode("reader");
+
+      qr.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+
+        async (decodedText) => {
+          const eventId = document.getElementById("eventSelect").value;
+
+          try {
+            const res = await fetch(API + "/tickets/validate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                qr: decodedText,
+                eventId: Number(eventId),
+              }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+              showResult(`✔ Gyldig billett: ${data.name}`, true);
+            } else {
+              showResult(`✖ ${data.error}`, false);
+            }
+
+          } catch (err) {
+            showResult("Feil ved validering!", false);
+          }
+        },
+
+        () => {} // Ignorer scanning errors
+      );
+    }
+
+    startScanner();
+  </script>
+
+</body>
+</html>

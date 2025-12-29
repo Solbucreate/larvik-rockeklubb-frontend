@@ -1,0 +1,17 @@
+
+  {
+  "billettnr": { "top": "18px", "left": "18px", "fontSize": "14px" },
+  "navn":      { "top": "100px", "left": "18px", "fontSize": "14px" },
+  "pris":      { "top": "120px", "left": "18px", "fontSize": "14px" },
+  "dato":      { "top": "200px","left": "18px", "fontSize": "14px" },
+
+  "band":      { "top": "40px", "left": "50%", "fontSize": "28px" },
+  "tour":      { "top": "80px", "left": "50%", "fontSize": "24px" },
+  "venue":     { "top": "120px","left": "50%", "fontSize": "22px" },
+  "date":      { "top": "160px","left": "50%", "fontSize": "20px" },
+  "reftext":   { "top": "205px","left": "50%", "fontSize": "12px" },
+
+  "eventid":   { "top": "18px", "right": "80px", "fontSize": "14px" },
+  "qr":        { "top": "65px", "right": "28px" },
+  "site":      { "top": "198px","right": "15px", "fontSize": "13px" }
+}

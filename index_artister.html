@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tidligere artister – Larvik Rockeklubb</title>
+
+<style>
+/* === GRUNNLEGGENDE === */
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* === HEADER === */
+header {
+  background: #1a1a1a;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e63946;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+}
+header img { max-height: 90px; }
+.logo-left { max-height: 90px; }
+.logo-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 30px;
+  max-height: 45px;
+  filter: drop-shadow(0 0 3px rgba(180,200,255,0.6))
+          drop-shadow(0 0 8px rgba(200,220,255,0.7));
+  animation: glowWhiteCool 6s ease-in-out infinite;
+}
+
+/* Kald hvit neonglød */
+@keyframes glowWhiteCool {
+  0% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+  50% { filter: drop-shadow(0 0 6px rgba(200,230,255,0.9)) drop-shadow(0 0 14px rgba(210,240,255,1)); }
+  100% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+}
+
+/* === BURGERMENY === */
+.burger {
+  cursor: pointer;
+  width: 25px;
+  height: 18px;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  z-index: 100;
+}
+.burger span {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #e63946;
+  border-radius: 2px;
+  left: 0;
+  transition: 0.3s;
+}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:9px;}
+.burger span:nth-child(3){top:18px;}
+.menu {
+  display: none;
+  position: absolute;
+  top: 75px;
+  right: 20px;
+  background: #1a1a1a;
+  border: 2px solid #e63946;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #eee;
+  text-decoration: none;
+}
+.menu a:hover { background: #e63946; color: #111; }
+.show { display: block; }
+
+.social-icons {
+  position: absolute;
+  top: 80%;
+  right: 110px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.social-icons img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+/* Skjul sosiale medier når menyen er åpen */
+.menu.show ~ .social-icons { display: none; }
+
+/* === HOVEDBOKS === */
+main {
+  max-width: 900px;
+  margin: 50px auto 120px;
+  padding: 40px 30px;
+  background: rgb(20,20,20);
+  border-radius: 12px;
+  box-shadow: 0 0 60px rgba(228, 32, 32, 0.4);
+  backdrop-filter: blur(3px);
+  position: relative;
+  z-index: 2;
+}
+main * { position: relative; z-index: 1; }
+
+/* === TITTEL === */
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 2rem;
+  margin-top: -20px;
+  margin-bottom: 50px;
+  letter-spacing: 1px;
+}
+
+/* === ARTIST-KORT === */
+.artist-card {
+  width: 420px;
+  margin: 0 auto 40px;
+  background: rgb(20,20,20);
+  border: 2px solid #e63946;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(230,57,70,0.25);
+  transition: 0.3s;
+  overflow: hidden;
+}
+.artist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(230,57,70,0.45);
+}
+.artist-card img {
+  width: 100%;
+  display: block;
+}
+.artist-info {
+  padding: 20px;
+  text-align: center;
+}
+.artist-info h2 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.artist-info p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* === KNAPP – 3D metallisk stil === */
+.artist-info a {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  background: linear-gradient(180deg, #2a2a2a 0%, #101010 100%);
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.artist-info a:hover {
+  color: #f5f5f5;
+  background: linear-gradient(180deg, #343434 0%, #151515 100%);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.9),
+    0 0 10px rgba(255,255,255,0.25),
+    0 0 12px rgba(255,255,255,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+.artist-info a:active {
+  background: linear-gradient(180deg, #1a1a1a 0%, #050505 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.8),
+    inset 0 -1px 0 rgba(255,255,255,0.1),
+    0 0 5px rgba(230,57,70,0.5);
+  transform: translateY(1px);
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 15px;
+  border-top: 2px solid #e63946;
+  margin-top: 50px;
+  color: #aaa;
+}
+
+/* === MOBIL === */
+@media (max-width: 768px) {
+  .artist-card { width: 90%; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <img src="assets/logo_left.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="assets/logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_om.html" onclick="toggleMenu()">Om oss</a>
+    <a href="index_frivillig.html" onclick="toggleMenu()">LR Frivillig</a>
+    <a href="index_artister.html" onclick="toggleMenu()">Tidligere Artister</a>
+    <a href="index_tech.html" onclick="toggleMenu()">Tech Spec / Utstyr</a>
+    <a href="index_utleie.html" onclick="toggleMenu()">Utleie</a>
+  </nav>
+   <div class="social-icons">
+    <a href="#"><img src="assets/facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="assets/instagram.png" alt="Instagram"></a>
+  </div>
+</header>
+
+<main>
+  <h1>Tidligere Artister</h1>
+
+  <!-- SABATON -->
+  <div class="artist-card">
+    <img src="Sabaton.png" alt="Sabaton">
+    <div class="artist-info">
+      <h2>Sabaton</h2>
+      <p>Et av Sveriges største metalband, kjent for sine episke konserter og historiske tekster. Gjorde en uforglemmelig opptreden i Larvik!</p>
+      <a href="index_artist_sabaton.html">Les mer</a>
+    </div>
+  </div>
+
+  <!-- HELLBILLIES -->
+  <div class="artist-card">
+    <img src="hellbillies_thumb.jpg" alt="Hellbillies">
+    <div class="artist-info">
+      <h2>Hellbillies</h2>
+      <p>Hellbillies fylte lokalet med ekte norsk rock og energi. En kveld med allsang og høy stemning fra start til slutt.</p>
+      <a href="index_artist_hellbillies.html">Les mer</a>
+    </div>
+  </div>
+
+  <!-- DUMDUM BOYS -->
+  <div class="artist-card">
+    <img src="dumdum_thumb.jpg" alt="DumDum Boys">
+    <div class="artist-info">
+      <h2>DumDum Boys</h2>
+      <p>Med klassikere som "Splitter Pine" og "Stjernesludd" leverte de en rå, nostalgisk kveld i ekte DumDum-stil.</p>
+      <a href="index_artist_dumdum.html">Les mer</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById("dropdownMenu").classList.toggle("show");
+}
+</script>
+
+</body>
+</html>

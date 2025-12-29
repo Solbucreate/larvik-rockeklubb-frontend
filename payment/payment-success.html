@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Betaling vellykket</title>
+</head>
+<body>
+
+  <h1>Betaling mottatt!</h1>
+  <p>Billetter genereres og sendes på epost nå...</p>
+
+  <div id="status"></div>
+
+  <script>
+  async function processTickets() {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order");
+
+    if (!orderId) {
+      document.getElementById("status").innerText = "Mangler ordre-ID";
+      return;
+    }
+
+    // Hent ordren fra backend
+    const order = await fetch(`/api/orders/${orderId}`).then(r => r.json());
+
+    if (!order || !order.id) {
+      document.getElementById("status").innerText = "Fant ikke ordren";
+      return;
+    }
+
+    // Generer billetter
+    const result = await fetch("/api/tickets/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId: order.id,
+        eventId: order.eventId,
+        quantity: order.quantity,
+      }),
+    }).then(r => r.json());
+
+    document.getElementById("status").innerText =
+      "🎉 Billetter er generert og sendt på e-post!";
+  }
+
+  processTickets();
+</script>
+
+
+</body>
+</html>

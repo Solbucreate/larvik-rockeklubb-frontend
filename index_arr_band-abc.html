@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabaton – Larvik Rockeklubb</title>
+
+<style>
+:root { --ikonfarge: #cfcfcf; }
+body { font-family: Arial, sans-serif; background:#111; color:#eee; margin:0; }
+
+header {
+  background:#1a1a1a;
+  padding:8px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:2px solid #e63946;
+  position:relative;
+  z-index:100;
+}
+
+header img { max-height:90px; }
+.logo-left { max-height:90px; }
+.logo-center {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:30px;
+  max-height:45px;
+  filter: drop-shadow(0 0 3px rgba(180,200,255,0.6))
+          drop-shadow(0 0 8px rgba(200,220,255,0.7));
+  animation: glowWhiteCool 6s ease-in-out infinite;
+}
+
+/* Kald hvit neonglød */
+@keyframes glowWhiteCool {
+  0% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+  50% { filter: drop-shadow(0 0 6px rgba(200,230,255,0.9)) drop-shadow(0 0 14px rgba(210,240,255,1)); }
+  100% { filter: drop-shadow(0 0 3px rgba(180,200,255,0.6)) drop-shadow(0 0 8px rgba(200,220,255,0.7)); }
+}
+
+/* --- BURGERMENY --- */
+.burger {
+  cursor:pointer;
+  width:25px;
+  height:18px;
+  position:absolute;
+  right:20px;
+  bottom:15px;
+  z-index:1001;
+}
+.burger span {
+  position:absolute;
+  height:4px;
+  width:100%;
+  background:#e63946;
+  border-radius:2px;
+  left:0;
+  transition:0.3s;
+}
+.burger span:nth-child(1){top:0;}
+.burger span:nth-child(2){top:9px;}
+.burger span:nth-child(3){top:18px;}
+
+/* --- MENY --- */
+.menu {
+  display:none;
+  position:absolute;
+  top:75px;
+  right:20px;
+  background:#1a1a1a;
+  border:2px solid #e63946;
+  border-radius:6px;
+  overflow:hidden;
+  z-index:1000;
+}
+.menu a {
+  display:block;
+  padding:10px 20px;
+  color:#eee;
+  text-decoration:none;
+}
+.menu a:hover { background:#e63946; color:#111; }
+.show { display:block; }
+
+/* --- MAIN CONTENT --- */
+main {
+  max-width:900px;
+  margin:50px auto 120px;
+  padding:60px;
+  background:rgba(20,20,20,0.85);
+  border-radius:12px;
+  box-shadow:0 0 60px rgba(228,32,32,0.43);
+  backdrop-filter:blur(3px);
+  text-align:center;
+}
+main img {
+  width:60%;
+  max-width:550px;
+  border-radius:10px;
+  margin:50px auto 10px auto;
+  display:block;
+}
+
+/* --- ARRANGEMENTINFO --- */
+.arr-detaljer {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:20px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+.arr-kort {
+  flex:0 1 150px;
+  background:#111;
+  border:1px solid #e63946;
+  border-radius:6px;
+  padding:6px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  box-shadow:0 0 12px rgba(230,57,70,0.4);
+}
+.arr-kort strong { font-size:0.8rem; color:#fff; }
+.arr-kort div { font-size:0.75rem; color:#ccc; }
+
+.spotify-link {
+  color:#1db954;
+  text-decoration:none;
+  font-weight:bold;
+  display:inline-block;
+  margin-bottom:25px;
+}
+.spotify-link:hover { text-decoration:underline; }
+
+/* --- BILLETTKNAPP (3D) --- */
+.billett-knapp {
+  display:inline-block;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:#fff;
+  background:linear-gradient(180deg,#2a2a2a 0%,#101010 100%);
+  border:1px solid #000;
+  border-radius:8px;
+  padding:12px 30px;
+  font-size:1rem;
+  letter-spacing:1px;
+  transition:all 0.25s ease;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.billett-knapp:hover {
+  color:#f5f5f5;
+  background:linear-gradient(180deg,#343434 0%,#151515 100%);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.9),
+    0 0 10px rgba(255,255,255,0.25),
+    0 0 12px rgba(255,255,255,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+  transform:translateY(-2px);
+}
+.billett-knapp:active {
+  background:linear-gradient(180deg,#1a1a1a 0%,#050505 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.8),
+    inset 0 -1px 0 rgba(255,255,255,0.1),
+    0 0 5px rgba(230,57,70,0.5);
+  transform:translateY(1px);
+}
+
+footer {
+  text-align:center;
+  padding:15px;
+  border-top:2px solid #e63946;
+  margin-top:50px;
+  color:#aaa;
+}
+
+@media (max-width:768px){
+  .arr-detaljer{flex-direction:column;}
+  main img{width:90%;}
+}
+html{overflow-y:scroll;}
+
+.social-icons {
+  position: absolute;
+  top: 80%;
+  right: 110px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+}
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.social-icons img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+/* Skjul sosiale medier når menyen er åpen */
+.menu.show ~ .social-icons { display: none; }
+</style>
+</head>
+
+<body>
+<header>
+  <img src="assets/logo_left.png" alt="Larvik Rockeklubb Logo" class="logo-left">
+  <img src="assets/logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
+
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+
+  <nav id="dropdownMenu" class="menu">
+    <a href="index.html" onclick="toggleMenu()">Hjem</a>
+    <a href="index_om.html" onclick="toggleMenu()">Om oss</a>
+    <a href="index_frivillig.html" onclick="toggleMenu()">RK Frivillig</a>
+    <a href="index_artister.html" onclick="toggleMenu()">Tidligere Artister</a>
+    <a href="index_tech.html" onclick="toggleMenu()">Tech Spec / Utstyr</a>
+    <a href="index_utleie.html" onclick="toggleMenu()">Utleie</a>
+  </nav>
+  <div class="social-icons">
+    <a href="#"><img src="assets/facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="assets/instagram.png" alt="Instagram"></a>
+  </div>
+</header>
+
+<main class="arrangement">
+  <img src="Sabaton.png" alt="Sabaton">
+  <section class="arr-detaljer">
+    <div class="arr-kort"><strong>Sted:</strong>&nbsp;Jotron Arena</div>
+    <div class="arr-kort"><strong>Dato:</strong>&nbsp;10. mai 2026</div>
+    <div class="arr-kort"><strong>Tid:</strong>&nbsp;20:00</div>
+    <div class="arr-kort"><strong>Pris:</strong>&nbsp;450,-</div>
+  </section>
+
+  <h1>SABATON</h1>
+  <a href="https://open.spotify.com/track/0MxqiUhIbMwIEOYTgdNbxb" target="_blank" class="spotify-link">🎧 Hør Sabaton på Spotify</a>
+
+  <p><strong>Sabaton</strong> er et svensk power metal-band fra Falun, dannet i 1999, kjent for sine historiske krigstemaer i tekstene. Bandet kombinerer kraftige riffs med vokalist Joakim Brodéns karakteristiske dype stemme, og skiller seg ut med en unik tilnærming til heavy metal som blander historiefortelling med energiske konserter.</p>
+
+  <p>I 2026 reiser bandet på turné som heter <em>"The Legendary Tour"</em> og ankommer Jotron ARENA 10. mai.</p>
+
+  <a href="index_kjop_billett.html?eventId=1" class="billett-knapp">Kjøp billett</a>
+
+</main>
+
+<footer>&copy; 2025 Larvik Rockeklubb. Alle rettigheter forbeholdt.</footer>
+
+<script>
+function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle("show"); }
+</script>
+
+<script>
+const API_BASE = "https://larvik-rockeklubb-backend.onrender.com"
+(async function () {
+  // hent eventId fra URL
+  const params = new URLSearchParams(window.location.search);
+  const eventId = params.get("eventId");
+  if (!eventId) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/events/${eventId}`)
+    const ev = await res.json();
+    if (!res.ok || !ev) return;
+
+    /* ===== BILDE ===== */
+    const img = document.querySelector("main img");
+    if (img) {
+      img.src = ev.image;
+      img.alt = ev.title;
+    }
+
+    /* ===== TITTEL ===== */
+    const h1 = document.querySelector("main h1");
+    if (h1) h1.textContent = ev.title.toUpperCase();
+
+    /* ===== ARR-KORT (sted, dato, tid, pris) ===== */
+    const kort = document.querySelectorAll(".arr-kort");
+    kort.forEach(k => {
+      const label = k.textContent.toLowerCase();
+
+      if (label.includes("sted")) {
+        k.innerHTML = `<strong>Sted:</strong>&nbsp;${ev.venue}`;
+      }
+      if (label.includes("dato")) {
+        const dato = new Date(ev.date).toLocaleDateString("no-NO", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+        k.innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
+      }
+      if (label.includes("tid")) {
+        k.innerHTML = `<strong>Tid:</strong>&nbsp;${ev.time}`;
+      }
+      if (label.includes("pris")) {
+        k.innerHTML = `<strong>Pris:</strong>&nbsp;${ev.price},-`;
+      }
+    });
+
+    /* ===== BESKRIVELSE ===== */
+    const paras = document.querySelectorAll("main p");
+    if (paras[0]) paras[0].innerHTML =
+      `<strong>${ev.title}</strong> ${ev.description}`;
+
+    /* ===== KJØP BILLETT-LENKE ===== */
+    const buyBtn = document.querySelector(".billett-knapp");
+    if (buyBtn) {
+      buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
+    }
+
+  } catch (err) {
+    console.error("Kunne ikke hente arrangement", err);
+  }
+})();
+
+</script>
+
+</body>
+</html>
