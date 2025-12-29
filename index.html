@@ -278,11 +278,8 @@ footer {
 
 <section id="arrangementer">
   <h2>Kommende arrangementer</h2>
-  <div id="events"></div>
+    <div id="events"></div>
 </section>
-
-<script src="js/events.js"></script>
-
 
 <section id="nyhetsbrev">
   <div class="container">
@@ -300,42 +297,39 @@ footer {
 
 <script>
 function toggleMenu(){
-  document.getElementById("dropdownMenu").classList.toggle("show");
-}
+  document.getElementById("dropdownMenu").classList.toggle("show");}
 </script>
 
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-async function loadEvents() {
-  const res = await fetch(`${API_BASE}/api/events`);
-  const events = await res.json();
-
-  const container = document.getElementById("events");
-  container.innerHTML = "";
-
-  events.forEach(e => {
-    const a = document.createElement("a");
-    a.className = "arrangement";
-    a.href = `index_kjop_billett.html?eventId=${e.id}`;
-
-    a.innerHTML = `
-      <img src="assets/${e.image}" alt="${e.title}">
-      <div class="arrangement-info">
-        <h3>${e.title} / ${e.venue}</h3>
-        <p>${new Date(e.event_date).toLocaleDateString("no-NO")} | ${e.city}</p>
-      </div>
-    `;
-
-    container.appendChild(a);
-  });
+function formatDato(datoStr) {
+  const d = new Date(datoStr);
+  return d.toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" });
 }
 
-loadEvents();
+fetch(`${API_BASE}/api/events`)
+  .then(res => res.json())
+  .then(events => {
+    const box = document.getElementById("events");
+    box.innerHTML = "";
+
+    events.forEach(e => {
+      box.innerHTML += `
+        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+          <img src="${e.image}" alt="${e.title}">
+          <div class="arrangement-info">
+            <h3>${e.title} / ${e.venue}</h3>
+            <p>${formatDato(e.event_date)} | ${e.city}</p>
+          </div>
+        </a>
+      `;
+    });
+  })
+  .catch(() => {
+    const box = document.getElementById("events");
+    if (box) box.innerHTML = "<p>Kunne ikke laste arrangement.</p>";
+  });
 </script>
-
-
-
-
 </body>
 </html>
