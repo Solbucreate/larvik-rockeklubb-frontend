@@ -233,13 +233,13 @@ html{overflow-y:scroll;}
   </div>
 </header>
 
-<main class="arrangement">
-  <img src="Sabaton.png" alt="Sabaton">
+<h1 style="display:none;">SABATON</h1>
+<img src="Sabaton.png" alt="Sabaton" style="display:none;">
   <section class="arr-detaljer">
-    <div class="arr-kort"><strong>Sted:</strong>&nbsp;Jotron Arena</div>
-    <div class="arr-kort"><strong>Dato:</strong>&nbsp;10. mai 2026</div>
-    <div class="arr-kort"><strong>Tid:</strong>&nbsp;20:00</div>
-    <div class="arr-kort"><strong>Pris:</strong>&nbsp;450,-</div>
+    <div class="arr-kort" style="display:none;"><strong>Sted:</strong>&nbsp;Jotron Arena</div>
+    <div class="arr-kort" style="display:none;"><strong>Dato:</strong>&nbsp;10. mai 2026</div>
+    <div class="arr-kort" style="display:none;"><strong>Tid:</strong>&nbsp;20:00</div>
+    <div class="arr-kort" style="display:none;"><strong>Pris:</strong>&nbsp;450,-</div>
   </section>
 
   <h1>SABATON</h1>
@@ -260,15 +260,15 @@ function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle(
 </script>
 
 <script>
-const API_BASE = "https://larvik-rockeklubb-backend.onrender.com"
+const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
+
 (async function () {
-  // hent eventId fra URL
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("eventId");
   if (!eventId) return;
 
   try {
-    const res = await fetch(`${API_BASE}/api/events/${eventId}`)
+    const res = await fetch(`${API_BASE}/api/events/${eventId}`);
     const ev = await res.json();
     if (!res.ok || !ev) return;
 
@@ -277,20 +277,26 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com"
     if (img) {
       img.src = ev.image;
       img.alt = ev.title;
+      img.style.display = "block";
     }
 
     /* ===== TITTEL ===== */
     const h1 = document.querySelector("main h1");
-    if (h1) h1.textContent = ev.title.toUpperCase();
+    if (h1) {
+      h1.textContent = ev.title.toUpperCase();
+      h1.style.display = "block";
+    }
 
-    /* ===== ARR-KORT (sted, dato, tid, pris) ===== */
+    /* ===== ARR-KORT ===== */
     const kort = document.querySelectorAll(".arr-kort");
     kort.forEach(k => {
       const label = k.textContent.toLowerCase();
 
       if (label.includes("sted")) {
         k.innerHTML = `<strong>Sted:</strong>&nbsp;${ev.venue}`;
+        k.style.display = "flex";
       }
+
       if (label.includes("dato")) {
         const dato = new Date(ev.date).toLocaleDateString("no-NO", {
           day: "numeric",
@@ -298,32 +304,40 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com"
           year: "numeric"
         });
         k.innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
+        k.style.display = "flex";
       }
+
       if (label.includes("tid")) {
         k.innerHTML = `<strong>Tid:</strong>&nbsp;${ev.time}`;
+        k.style.display = "flex";
       }
+
       if (label.includes("pris")) {
         k.innerHTML = `<strong>Pris:</strong>&nbsp;${ev.price},-`;
+        k.style.display = "flex";
       }
     });
 
     /* ===== BESKRIVELSE ===== */
     const paras = document.querySelectorAll("main p");
-    if (paras[0]) paras[0].innerHTML =
-      `<strong>${ev.title}</strong> ${ev.description}`;
+    if (paras[0]) {
+      paras[0].innerHTML = `<strong>${ev.title}</strong> ${ev.description}`;
+      paras[0].style.display = "block";
+    }
 
-    /* ===== KJØP BILLETT-LENKE ===== */
+    /* ===== KJØP BILLETT ===== */
     const buyBtn = document.querySelector(".billett-knapp");
     if (buyBtn) {
       buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
+      buyBtn.style.display = "inline-block";
     }
 
   } catch (err) {
     console.error("Kunne ikke hente arrangement", err);
   }
 })();
-
 </script>
+
 
 </body>
 </html>
