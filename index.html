@@ -315,33 +315,44 @@ function toggleMenu(){
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-function formatDato(datoStr) {
-  const d = new Date(datoStr);
-  return d.toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" });
-}
+document.addEventListener("DOMContentLoaded", async () => {
+  const box = document.getElementById("events");
+  const tpl = document.getElementById("event-template");
+  if (!box || !tpl) return;
 
-fetch(`${API_BASE}/api/events`)
-  .then(res => res.json())
-  .then(events => {
-    const box = document.getElementById("events");
+  try {
+    const res = await fetch(`${API_BASE}/api/events`);
+    if (!res.ok) return;
+    const events = await res.json();
+
     box.innerHTML = "";
 
     events.forEach(e => {
-      box.innerHTML += `
-        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}"
-          <img src="${e.image}" alt="${e.title}">
-          <div class="arrangement-info">
-            <h3>${e.title} / ${e.venue}</h3>
-            <p>${formatDato(e.event_date)} | ${e.city}</p>
-          </div>
-        </a>
-      `;
+      const card = tpl.cloneNode(true);
+      card.removeAttribute("id");
+      card.style.display = "";
+
+      // VIKTIG: index -> arr_band (ikke kjøp)
+      card.href = `index_arr_band-abc.html?eventId=${e.id}`;
+
+      const img = card.querySelector("img");
+      img.src = e.image;         // f.eks "Sabaton.png" eller "assets/Sabaton.png"
+      img.alt = e.title;
+
+      card.querySelector("h3").textContent = `${e.title} / ${e.venue}`;
+
+      const dato = new Date(e.event_date).toLocaleDateString("no-NO", {
+        day: "numeric", month: "long", year: "numeric"
+      });
+      card.querySelector("p").textContent = `${dato} | ${e.city}`;
+
+      box.appendChild(card);
     });
-  })
-  .catch(() => {
-    const box = document.getElementById("events");
-    if (box) box.innerHTML = "<p>Kunne ikke laste arrangement.</p>";
-  });
+  } catch (e) {
+    // ikke gjør noe
+  }
+});
 </script>
+
 </body>
 </html>
