@@ -316,7 +316,7 @@ fetch(`${API_BASE}/api/events`)
 
     events.forEach(e => {
       box.innerHTML += `
-        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}"
           <img src="${e.image}" alt="${e.title}">
           <div class="arrangement-info">
             <h3>${e.title} / ${e.venue}</h3>
