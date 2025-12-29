@@ -3,19 +3,15 @@ fetch("https://larvik-rockeklubb-backend.onrender.com/events")
   .then(events => {
     const container = document.getElementById("events");
 
-    events.forEach(event => {
+    events.forEach(e => {
       const div = document.createElement("div");
       div.className = "arrangement";
 
       div.innerHTML = `
-        <img src="${event.image}" alt="${event.title}">
-        <div class="arrangement-info">
-          <h3>${event.title}</h3>
-          <p>${event.event_date} | ${event.city}</p>
-          <a href="index_kjop_billett.html?event_id=${event.id}">
-            Kjøp billett
-          </a>
-        </div>
+        <h3>${e.title}</h3>
+        <p>${e.event_date} | ${e.city}</p>
+        <p>${e.price} kr</p>
+        <a href="index_kjop_billett.html?eventId=${e.id}">Kjøp billett</a>
       `;
 
       container.appendChild(div);
