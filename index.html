@@ -278,15 +278,6 @@ footer {
 
 <section id="arrangementer">
   <h2>Kommende arrangementer</h2>
-  <a class="arrangement" href="/index_arr_band-abc.html">
-    <img src="Sabaton.png" alt="Sabaton">
-    <div class="arrangement-info">
-      <h3>Sabaton / Jotron Arena</h3>
-      <p>10. mai 2026 | Larvik</p>
-    </div>
-  </a>
-</section>
-<section>
   
   <div id="events"></div>
 </section>
@@ -312,30 +303,35 @@ function toggleMenu(){
 </script>
 
 <script>
-fetch("https://larvik-rockeklubb-backend.onrender.com/events")
-  .then(res => res.json())
-  .then(events => {
-    const box = document.getElementById("events");
-    box.innerHTML = "";
+const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-    events.forEach(e => {
-      box.innerHTML += `
-        <div class="event">
-          <h3>${e.title}</h3>
-          <p>${e.venue}, ${e.city}</p>
-          <p>${e.event_date}</p>
-          <p>${e.price} kr</p>
-          <a href="index_kjop_billett.html?event_id=${e.id}">
-            Kjøp billett
-          </a>
-        </div>
-      `;
-    });
+async function loadEvents() {
+  const res = await fetch(`${API_BASE}/api/events`);
+  const events = await res.json();
+
+  const container = document.getElementById("events");
+  container.innerHTML = "";
+
+  events.forEach(e => {
+    const a = document.createElement("a");
+    a.className = "arrangement";
+    a.href = `index_kjop_billett.html?eventId=${e.id}`;
+
+    a.innerHTML = `
+      <img src="assets/${e.image}" alt="${e.title}">
+      <div class="arrangement-info">
+        <h3>${e.title} / ${e.venue}</h3>
+        <p>${new Date(e.event_date).toLocaleDateString("no-NO")} | ${e.city}</p>
+      </div>
+    `;
+
+    container.appendChild(a);
   });
+}
 
-src="js/events.js"
-
+loadEvents();
 </script>
+
 
 
 
