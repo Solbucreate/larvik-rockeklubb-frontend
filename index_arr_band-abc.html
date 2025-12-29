@@ -278,6 +278,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       img.src = ev.image;
       img.alt = ev.title;
       img.style.display = "block";
+      img.style.margin = "50px auto 10px auto";
     }
 
     /* ===== TITTEL ===== */
@@ -285,6 +286,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
     if (h1) {
       h1.textContent = ev.title.toUpperCase();
       h1.style.display = "block";
+      h1.style.textAlign = "center";
     }
 
     /* ===== ARR-KORT ===== */
@@ -318,11 +320,18 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       }
     });
 
+    /* ===== SPOTIFY LINK ===== */
+    const spotify = document.querySelector(".spotify-link");
+    if (spotify) {
+      spotify.style.display = "inline-block";
+      spotify.style.textAlign = "center";
+    }
+
     /* ===== BESKRIVELSE ===== */
     const paras = document.querySelectorAll("main p");
     if (paras[0]) {
       paras[0].innerHTML = `<strong>${ev.title}</strong> ${ev.description}`;
-      paras[0].style.display = "block";
+      paras[0].style.textAlign = "center";
     }
 
     /* ===== KJØP BILLETT ===== */
@@ -337,6 +346,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
   }
 })();
 </script>
+
 
 
 </body>
