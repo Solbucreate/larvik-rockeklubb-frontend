@@ -320,7 +320,7 @@ async function loadEvents() {
     a.href = `index_kjop_billett.html?eventId=${e.id}`;
 
     a.innerHTML = `
-      a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+      <img src="assets/${e.image}" alt="${e.title}">
       <div class="arrangement-info">
         <h3>${e.title} / ${e.venue}</h3>
         <p>${new Date(e.event_date).toLocaleDateString("no-NO")} | ${e.city}</p>
