@@ -359,7 +359,7 @@ async function loadTickets(orderId) {
 b.innerHTML = `
   <div class="text" data-field="billettnr">
     <span style="font-weight:700;">Billettnr:</span>
-    <span style="font-weight:400;"> ${ticket.ticket_code}</span>
+    <span style="font-weight:400;"> ${ticket.ticket_code.event.id}</span>
   </div>
 
   <div class="text" data-field="navn">
