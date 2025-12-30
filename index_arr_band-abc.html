@@ -262,83 +262,82 @@ function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle(
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-(function () {
+(async function () {
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("eventId");
   if (!eventId) return;
 
-  fetch(`${API_BASE}/api/events/${eventId}`)
-    .then(r => r.json().then(data => ({ ok: r.ok, data })))
-    .then(({ ok, data: ev }) => {
-      if (!ok || !ev) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/events/${eventId}`);
+    const ev = await res.json();
+    if (!res.ok || !ev) return;
 
-      const main = document.querySelector("main");
-      if (main) main.style.textAlign = "center";
+    /* ===== BILDE ===== */
+    const img = document.querySelector("main img");
+    if (img) {
+      img.src = ev.image;
+      img.alt = ev.title;
+      img.style.display = "block";
+    }
 
-      /* BILDE */
-      const img = document.querySelector("main img");
-      if (img) {
-        img.src = ev.image || "";
-        img.alt = ev.title || "";
-        img.style.display = "block";
-        img.style.margin = "50px auto 10px auto";
+    /* ===== TITTEL ===== */
+    const h1 = document.querySelector("main h1");
+    if (h1) {
+      h1.textContent = ev.title.toUpperCase();
+      h1.style.display = "block";
+    }
+
+    /* ===== ARR-KORT ===== */
+    const kort = document.querySelectorAll(".arr-kort");
+    kort.forEach(k => {
+      const label = k.textContent.toLowerCase();
+
+      if (label.includes("sted")) {
+        k.innerHTML = `<strong>Sted:</strong>&nbsp;${ev.venue}`;
+        k.style.display = "flex";
       }
 
-      /* TITTEL (BANDNAVN) */
-      const h1 = document.querySelector("main h1");
-      if (h1) {
-        h1.textContent = (ev.title || "").toUpperCase();
-        h1.style.display = "block";
-        h1.style.width = "100%";
-        h1.style.textAlign = "center";
-        h1.style.margin = "10px auto 0 auto";
+      if (label.includes("dato")) {
+        const dato = new Date(ev.date).toLocaleDateString("no-NO", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+        k.innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
+        k.style.display = "flex";
       }
 
-      /* ARR-KORT: [0]=Sted [1]=Dato [2]=Tid [3]=Pris */
-      const kort = document.querySelectorAll(".arr-kort");
-      const dateStr = ev.date || ev.event_date;
-      const dato = dateStr
-        ? new Date(dateStr).toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" })
-        : "";
-
-      if (kort[0]) kort[0].innerHTML = `<strong>Sted:</strong>&nbsp;${ev.venue || ""}`;
-      if (kort[1]) kort[1].innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
-      if (kort[2]) kort[2].innerHTML = `<strong>Tid:</strong>&nbsp;${(ev.time || "").toString().slice(0,5)}`;
-      if (kort[3]) kort[3].innerHTML = `<strong>Pris:</strong>&nbsp;${ev.price ?? ""},-`;
-
-      /* SPOTIFY LINK */
-      const spotify = document.querySelector(".spotify-link");
-      if (spotify) {
-        const spotifyUrl = ev.spotify_url || ev.spotify || ev.spotify_link || "";
-        if (spotifyUrl) spotify.href = spotifyUrl;
-
-        spotify.style.display = "block";
-        spotify.style.width = "100%";
-        spotify.style.textAlign = "center";
-        spotify.style.margin = "10px auto 25px auto";
+      if (label.includes("tid")) {
+        k.innerHTML = `<strong>Tid:</strong>&nbsp;${ev.time}`;
+        k.style.display = "flex";
       }
 
-      /* BESKRIVELSE */
-      const paras = document.querySelectorAll("main p");
-      if (paras[0]) {
-        paras[0].innerHTML = `<strong>${ev.title || ""}</strong> ${ev.description || ""}`;
-        paras[0].style.textAlign = "center";
-        paras[0].style.margin = "0 auto";
+      if (label.includes("pris")) {
+        k.innerHTML = `<strong>Pris:</strong>&nbsp;${ev.price},-`;
+        k.style.display = "flex";
       }
+    });
 
-      /* KJØP BILLETT-KNAPP */
-      const buyBtn = document.querySelector(".billett-knapp");
-      if (buyBtn) {
-        buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
-        buyBtn.style.display = "block";
-        buyBtn.style.width = "fit-content";
-        buyBtn.style.margin = "25px auto 0 auto";
-        buyBtn.style.textAlign = "center";
-      }
-    })
-    .catch(() => {});
+    /* ===== BESKRIVELSE ===== */
+    const paras = document.querySelectorAll("main p");
+    if (paras[0]) {
+      paras[0].innerHTML = `<strong>${ev.title}</strong> ${ev.description}`;
+      paras[0].style.display = "block";
+    }
+
+    /* ===== KJØP BILLETT ===== */
+    const buyBtn = document.querySelector(".billett-knapp");
+    if (buyBtn) {
+      buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
+      buyBtn.style.display = "inline-block";
+    }
+
+  } catch (err) {
+    console.error("Kunne ikke hente arrangement", err);
+  }
 })();
 </script>
+
 
 </body>
 </html>
