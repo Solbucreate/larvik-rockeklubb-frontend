@@ -290,17 +290,13 @@ function fmtDato(dateStr) {
   const total = order.total_price;
 
   document.getElementById("betalingInfo").innerHTML = `
-    <div>${title}</div>
-    <div>${tour}</div>
-    <div>${venue}</div>
-    <br>
-    <div>${dato}${dato && klokke ? " · " : ""}${klokke}</div>
-    <br>
-    <div>${buyerName}</div>
-    <div>Antall billetter: ${qty}</div>
-    <div>Totalpris: ${total} kr</div>
-  `;
-})();
+  <div class="event-title">${title}</div>
+  <div class="event-meta">${venue}</div>
+  <div class="event-meta">${dato}${dato && klokke ? " · " : ""}${klokke}</div>
+  <br>
+  <div>${buyerName}</div>
+  <div>Antall billetter: ${qty}</div>
+  <div>Totalpris: ${total} kr</div>`; })();
 
 async function betal() {
   if (!ORDER_ID) return;
