@@ -252,13 +252,10 @@ font-display: swap; }
   <img src="assets/logo_left.png" alt="Larvik Rockeklubb Logo" class="logo-left">
   <img src="assets/logo_midt.png" alt="Larvik Rockeklubb midtlogo" class="logo-center">
 
-  <div class="burger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 
   <nav id="dropdownMenu" class="menu">
     <a href="index.html" onclick="toggleMenu()">Hjem</a>
-    <a href="index_betalling.html" onclick="toggleMenu()">Tilbake</a>
   </nav>
   <div class="social-icons">
     <a href="#"><img src="assets/facebook.png" alt="Facebook"></a>
@@ -298,6 +295,11 @@ font-display: swap; }
   <script src="./qr.js"></script>
   
 <script>
+
+function toggleMenu(){
+  document.getElementById("dropdownMenu").classList.toggle("show");
+}
+
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
 const params = new URLSearchParams(location.search);
