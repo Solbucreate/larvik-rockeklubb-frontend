@@ -282,18 +282,18 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
     .then(({ ok, data: ev }) => {
       if (!ok || !ev) return;
 
-      const paras = document.querySelectorAll("main.arrangement p");
-if (paras[0] && ev.description) {
-  paras[0].innerHTML = `<strong>${ev.title || ""}</strong> ${ev.description}`;
-  paras[0].style.display = "block";
-} else if (paras[0]) {
-  paras[0].style.display = "none";
+      // Bilde
+      const img = document.querySelector("main.arrangement img");
+      if (img) { img.src = ev.image; img.alt = ev.title; }
+
+      const spotify = document.querySelector("main.arrangement .spotify-link");
+if (spotify && ev.spotify) {
+  spotify.href = ev.spotify;
+  spotify.style.display = "block";
+} else if (spotify) {
+  spotify.style.display = "none";
 }
 
-
-      // Tittel
-      const h1 = document.querySelector("main.arrangement h1");
-      if (h1) h1.textContent = String(ev.title || "").toUpperCase();
 
       // Kort: sted/dato/tid/pris
       const kort = document.querySelectorAll("main.arrangement .arr-kort");
@@ -321,9 +321,14 @@ if (paras[0] && ev.description) {
         }
       });
 
-      // Beskrivelse (bruker første <p>)
       const paras = document.querySelectorAll("main.arrangement p");
-      if (paras[0]) paras[0].innerHTML = `<strong>${ev.title || ""}</strong> ${ev.description || ""}`;
+if (paras[0] && ev.description) {
+  paras[0].innerHTML = `<strong>${ev.title || ""}</strong> ${ev.description}`;
+  paras[0].style.display = "block";
+} else if (paras[0]) {
+  paras[0].style.display = "none";
+}
+
 
       // Kjøp billett-knapp
       const buyBtn = document.querySelector("main.arrangement .billett-knapp");
