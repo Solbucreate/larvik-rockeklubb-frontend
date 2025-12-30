@@ -327,15 +327,17 @@ fetch(`${API_BASE}/api/events`)
     box.innerHTML = "";
 
     events.forEach(e => {
-      box.innerHTML += `
-          <img src="${e.image}" alt="${e.title}">
-          <div class="arrangement-info">
-            <h3>${e.title} / ${e.venue}</h3>
-            <p>${formatDato(e.event_date)} | ${e.city}</p>
-          </div>
-        </a>
-      `;
-    });
+  box.innerHTML += `
+    <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+      <img src="${e.image}" alt="${e.title}">
+      <div class="arrangement-info">
+        <h3>${e.title} / ${e.venue}</h3>
+        <p>${formatDato(e.event_date)} | ${e.city}</p>
+      </div>
+    </a>
+  `;
+});
+
   })
   .catch(() => {
     const box = document.getElementById("events");
