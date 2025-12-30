@@ -322,12 +322,8 @@ if (spotify && ev.spotify) {
       });
 
       const paras = document.querySelectorAll("main.arrangement p");
-if (paras[0] && ev.description) {
-  paras[0].innerHTML = `<strong>${ev.title || ""}</strong> ${ev.description}`;
-  paras[0].style.display = "block";
-} else if (paras[0]) {
-  paras[0].style.display = "none";
-}
+      if (paras[0]) {
+        paras[0].style.display = "none";}
 
 
       // Kjøp billett-knapp
