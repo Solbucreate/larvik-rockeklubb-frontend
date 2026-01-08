@@ -333,21 +333,27 @@ fetch(`${API_BASE}/api/events`)
     box.innerHTML = "";
 
     events.forEach(e => {
-      let imageSrc = e.image || "";
-    if (imageSrc && !imageSrc.startsWith("http")) {
-    imageSrc = `${API_BASE}/${imageSrc.replace(/^\/+/, "")}`;}
-    const dato = formatDato(e.event_date); // ✅ riktig felt fra backend
+  let imageSrc = e.image || "";
 
-      box.innerHTML += `
-        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
-          ${imageSrc ? `<img src="${imageSrc}" alt="${e.title}">` : ""}
-          <div class="arrangement-info">
-            <h3>${e.title || ""} / ${e.venue || ""}</h3>
-            <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
-          </div>
-        </a>
-      `;
-    });
+  // prefiks backend-url for /uploads/...
+  if (imageSrc.startsWith("/")) {
+    imageSrc = `${API_BASE}${imageSrc}`;
+  }
+
+  const dato = formatDato(e.event_date);
+
+  box.innerHTML += `
+    <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+      <img src="${imageSrc}" alt="${e.title}">
+      <div class="arrangement-info">
+        <h3>${e.title} / ${e.venue}</h3>
+        <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
+      </div>
+    </a>
+  `;
+});
+
+
   })
   .catch(() => {
     const box = document.getElementById("events");
