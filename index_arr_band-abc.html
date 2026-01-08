@@ -324,34 +324,29 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       /* =========================
          4. INFO-KORT (samme font)
       ========================= */
-      document.querySelectorAll(".arr-kort").forEach(k => {
-        const label = k.textContent.toLowerCase();
+      const kort = document.querySelectorAll(".arr-kort");
 
-        if (label.includes("sted")) {
-          k.innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
-        }
+if (kort.length >= 4) {
+  // Sted
+  kort[0].innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
 
-        if (label.includes("dato")) {
-          const dato = ev.event_date
-            ? new Date(ev.event_date).toLocaleDateString("no-NO", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-              })
-            : "";
-          k.innerHTML = `<strong>Dato:</strong> ${dato}`;
-        }
+  // Dato
+  const dato = ev.event_date
+    ? new Date(ev.event_date).toLocaleDateString("no-NO", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })
+    : "";
+  kort[1].innerHTML = `<strong>Dato:</strong> ${dato}`;
 
-        if (label.includes("tid")) {
-          const t = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
-          k.innerHTML = `<strong>Tid:</strong> ${t}`;
-        }
+  // Tid
+  const tid = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
+  kort[2].innerHTML = `<strong>Tid:</strong> ${tid}`;
 
-        if (label.includes("pris")) {
-          k.innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
-        }
-      });
-
+  // Pris
+  kort[3].innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
+}
       /* =========================
          5. BESKRIVELSE
       ========================= */
