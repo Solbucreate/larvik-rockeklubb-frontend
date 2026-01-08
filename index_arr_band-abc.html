@@ -281,19 +281,20 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       if (!ok || !ev) return;
 
       /* =========================
-         ARTIST / TITTEL
+         1. ARTIST / TITTEL (kun én)
       ========================= */
       const titleEl = document.querySelector(".arr-title");
-      if (titleEl) {
-        titleEl.textContent = ev.title || "";
-      }
+      if (titleEl) titleEl.textContent = ev.title || "";
 
       /* =========================
-         BILDE
-         (støtter begge feltnavn)
+         2. BILDE (fra /uploads)
       ========================= */
       const img = document.querySelector("main.arrangement img");
-      const imageSrc = ev.image || ev.image_url || "";
+      let imageSrc = ev.image || "";
+
+      if (imageSrc.startsWith("/")) {
+        imageSrc = `${API_BASE}${imageSrc}`;
+      }
 
       if (img && imageSrc) {
         img.src = imageSrc;
@@ -304,18 +305,18 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       }
 
       /* =========================
-         SPOTIFY
+         3. SPOTIFY (kun hvis aktiv)
       ========================= */
       const spotify = document.querySelector(".spotify-link");
-      if (spotify && ev.spotify) {
-        spotify.href = ev.spotify;
+      if (spotify && ev.spotify_enabled && ev.spotify_url) {
+        spotify.href = ev.spotify_url;
         spotify.style.display = "inline-block";
       } else if (spotify) {
         spotify.style.display = "none";
       }
 
       /* =========================
-         INFO-KORT
+         4. INFO-KORT (samme font)
       ========================= */
       document.querySelectorAll(".arr-kort").forEach(k => {
         const label = k.textContent.toLowerCase();
@@ -325,8 +326,8 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
         }
 
         if (label.includes("dato")) {
-          const dato = ev.date
-            ? new Date(ev.date).toLocaleDateString("no-NO", {
+          const dato = ev.event_date
+            ? new Date(ev.event_date).toLocaleDateString("no-NO", {
                 day: "numeric",
                 month: "long",
                 year: "numeric"
@@ -336,7 +337,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
         }
 
         if (label.includes("tid")) {
-          const t = ev.time ? String(ev.time).slice(0, 5) : "";
+          const t = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
           k.innerHTML = `<strong>Tid:</strong> ${t}`;
         }
 
@@ -346,7 +347,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       });
 
       /* =========================
-         BESKRIVELSE / INFO-TEKST
+         5. BESKRIVELSE
       ========================= */
       const textEl = document.querySelector(".arr-text");
       if (textEl) {
@@ -355,7 +356,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       }
 
       /* =========================
-         KJØP BILLETT
+         6. KJØP BILLETT
       ========================= */
       const buyBtn = document.querySelector(".billett-knapp");
       if (buyBtn) {
