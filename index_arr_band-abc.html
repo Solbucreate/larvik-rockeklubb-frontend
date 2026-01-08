@@ -276,25 +276,30 @@ function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle(
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("eventId");
   if (!eventId) return;
 
-  fetch(`${API_BASE}/api/events/${eventId}`)
-    .then(res => res.json())
-    .then(ev => {
+  fetch(API_BASE + "/api/events/" + eventId)
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (ev) {
       if (!ev) return;
 
       /* ===== TITTEL ===== */
       const titleEl = document.querySelector(".arr-title");
-      if (titleEl) titleEl.textContent = ev.title || "";
+      if (titleEl) {
+        titleEl.textContent = ev.title || "";
+      }
 
       /* ===== BILDE ===== */
       const img = document.querySelector("main.arrangement img");
       let imageSrc = ev.image || "";
       if (imageSrc.startsWith("/")) {
-        imageSrc = `${API_BASE}${imageSrc}`;
+        imageSrc = API_BASE + imageSrc;
       }
       if (img && imageSrc) {
         img.src = imageSrc;
@@ -303,24 +308,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       /* ===== INFO-KORT ===== */
-      const kort = document.querySelectorAll(".arr-kort");
+      const kortSted = document.querySelector(".arr-kort:nth-child(1)");
+      const kortDato = document.querySelector(".arr-kort:nth-child(2)");
+      const kortTid  = document.querySelector(".arr-kort:nth-child(3)");
+      const kortPris = document.querySelector(".arr-kort:nth-child(4)");
 
-      if (kort.length === 4) {
-        // STED
-        kort[0].innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
+      if (kortSted) {
+        kortSted.innerHTML = "<strong>Sted:</strong> " + (ev.venue || "");
+      }
 
-        // DATO (DD.MM.YYYY)
+      if (kortDato && ev.event_date) {
         const dato = ev.event_date
-          ? ev.event_date.split("T")[0].split("-").reverse().join(".")
-          : "";
-        kort[1].innerHTML = `<strong>Dato:</strong> ${dato}`;
+          .split("T")[0]
+          .split("-")
+          .reverse()
+          .join(".");
+        kortDato.innerHTML = "<strong>Dato:</strong> " + dato;
+      }
 
-        // TID (HH:MM)
-        const tid = ev.event_time ? ev.event_time.slice(0, 5) : "";
-        kort[2].innerHTML = `<strong>Tid:</strong> ${tid}`;
+      if (kortTid && ev.event_time) {
+        const tid = ev.event_time.slice(0, 5);
+        kortTid.innerHTML = "<strong>Tid:</strong> " + tid;
+      }
 
-        // PRIS
-        kort[3].innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
+      if (kortPris) {
+        kortPris.innerHTML = "<strong>Pris:</strong> " + (ev.price || "") + ",-";
       }
 
       /* ===== BESKRIVELSE ===== */
@@ -332,14 +344,15 @@ document.addEventListener("DOMContentLoaded", () => {
       /* ===== KJØP BILLETT ===== */
       const buyBtn = document.querySelector(".billett-knapp");
       if (buyBtn) {
-        buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
+        buyBtn.href = "index_kjop_billett.html?eventId=" + ev.id;
       }
+
     })
-    .catch(() => {});
+    .catch(function (err) {
+      console.error("Feil ved lasting av arrangement:", err);
+    });
+
 });
 </script>
-
-
-
 </body>
 </html>
