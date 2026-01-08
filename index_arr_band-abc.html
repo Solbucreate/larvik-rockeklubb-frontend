@@ -215,7 +215,6 @@ html{overflow-y:scroll;}
   font-size: 0.85rem;
   font-weight: normal;
 }
-
 </style>
 </head>
 
@@ -326,32 +325,32 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
          4. INFO-KORT (samme font)
       ========================= */
       document.querySelectorAll(".arr-kort").forEach(k => {
-  const type = k.dataset.type;
+        const label = k.textContent.toLowerCase();
 
-  if (type === "sted") {
-    k.innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
-  }
+        if (label.includes("sted")) {
+          k.innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
+        }
 
-  if (type === "dato") {
-    const dato = ev.event_date
-      ? new Date(ev.event_date).toLocaleDateString("no-NO", {
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        })
-      : "";
-    k.innerHTML = `<strong>Dato:</strong> ${dato}`;
-  }
+        if (label.includes("dato")) {
+          const dato = ev.event_date
+            ? new Date(ev.event_date).toLocaleDateString("no-NO", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+              })
+            : "";
+          k.innerHTML = `<strong>Dato:</strong> ${dato}`;
+        }
 
-  if (type === "tid") {
-    const tid = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
-    k.innerHTML = `<strong>Tid:</strong> ${tid}`;
-  }
+        if (label.includes("tid")) {
+          const t = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
+          k.innerHTML = `<strong>Tid:</strong> ${t}`;
+        }
 
-  if (type === "pris") {
-    k.innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
-  }
-});
+        if (label.includes("pris")) {
+          k.innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
+        }
+      });
 
       /* =========================
          5. BESKRIVELSE
