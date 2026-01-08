@@ -110,36 +110,48 @@
         { fps: 10, qrbox: 250 },
 
         async (decodedText) => {
-          const eventId = document.getElementById("eventSelect").value;
+  const raw = String(decodedText || "").trim();
 
-          try {
-            const res = await fetch(API + "/tickets/validate", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                qr: decodedText,
-                eventId: Number(eventId),
-              }),
-            });
+  let eventIdToSend = Number(
+    document.getElementById("eventSelect").value
+  );
+  let ticketCodeToSend = raw;
 
-            const data = await res.json();
+  // For QR-format: LR-<eventId>-<ticketCode>
+  if (raw.startsWith("LR-")) {
+    const parts = raw.split("-");
+    const maybeEventId = Number(parts[1]);
 
-            if (data.success) {
-              showResult(`✔ Gyldig billett: ${data.name}`, true);
-            } else {
-              showResult(`✖ ${data.error}`, false);
-            }
-
-          } catch (err) {
-            showResult("Feil ved validering!", false);
-          }
-        },
-
-        () => {} // Ignorer scanning errors
-      );
+    if (!Number.isNaN(maybeEventId) && parts.length >= 3) {
+      eventIdToSend = maybeEventId;
+      ticketCodeToSend = parts.slice(2).join("-");
     }
+  }
 
-    startScanner();
+  try {
+    const res = await fetch(API + "/tickets/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        qr: ticketCodeToSend,
+        eventId: eventIdToSend
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      showResult(`✔ Gyldig billett: ${data.name}`, true);
+    } else {
+      showResult(`✖ ${data.error}`, false);
+    }
+  } catch (err) {
+    showResult("Feil ved validering!", false);
+  }
+}
+
+
+    ,startScanner);}
   </script>
 
 </body>

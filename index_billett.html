@@ -398,7 +398,7 @@ b.innerHTML = `
 billettContainer.appendChild(b);
 
       new QRCode(document.getElementById(`qr-${i}`), {
-      text: `${ticket.ticket_code} | ${navn} | ${event.id}`,
+      text: `LR-${event.id}-${ticket.ticket_code}`,
         width: 120,
         height: 120
       });
