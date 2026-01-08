@@ -308,23 +308,7 @@ footer {
 </footer>
 
 <script>
-function toggleMenu(){
-  document.getElementById("dropdownMenu").classList.toggle("show");}
-</script>
-
-<script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
-
-function formatDato(datoStr) {
-  if (!datoStr) return "";
-  const d = new Date(datoStr);
-  if (isNaN(d)) return "";
-  return d.toLocaleDateString("no-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-}
 
 fetch(`${API_BASE}/api/events`)
   .then(res => res.json())
@@ -333,27 +317,36 @@ fetch(`${API_BASE}/api/events`)
     box.innerHTML = "";
 
     events.forEach(e => {
-  let imageSrc = e.image || "";
 
-  // prefiks backend-url for /uploads/...
-  if (imageSrc.startsWith("/")) {
-    imageSrc = `${API_BASE}${imageSrc}`;
-  }
+      // --- FINN DATOFELT SOM FAKTISK FINNES ---
+      const rawDate =
+        e.event_date ||
+        e.date ||
+        e.eventDate ||
+        "";
 
-  const dato = formatDato(e.event_date);
+      // --- FORMAT: DD.MM.YYYY ---
+      let dato = "";
+      if (rawDate) {
+        dato = rawDate.split("T")[0].split("-").reverse().join(".");
+      }
 
-  box.innerHTML += `
-    <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
-      <img src="${imageSrc}" alt="${e.title}">
-      <div class="arrangement-info">
-        <h3>${e.title} / ${e.venue}</h3>
-        <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
-      </div>
-    </a>
-  `;
-});
+      // --- BILDE ---
+      let imageSrc = e.image || "";
+      if (imageSrc.startsWith("/")) {
+        imageSrc = `${API_BASE}${imageSrc}`;
+      }
 
-
+      box.innerHTML += `
+        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+          ${imageSrc ? `<img src="${imageSrc}" alt="${e.title}">` : ""}
+          <div class="arrangement-info">
+            <h3>${e.title || ""} / ${e.venue || ""}</h3>
+            <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
+          </div>
+        </a>
+      `;
+    });
   })
   .catch(() => {
     const box = document.getElementById("events");
