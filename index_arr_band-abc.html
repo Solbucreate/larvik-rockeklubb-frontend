@@ -307,34 +307,29 @@ document.addEventListener("DOMContentLoaded", function () {
         img.style.display = "block";
       }
 
-      /* ===== INFO-KORT ===== */
-      const kortSted = document.querySelector(".arr-kort:nth-child(1)");
-      const kortDato = document.querySelector(".arr-kort:nth-child(2)");
-      const kortTid  = document.querySelector(".arr-kort:nth-child(3)");
-      const kortPris = document.querySelector(".arr-kort:nth-child(4)");
+      /* ===== INFO-KORT (STABIL) ===== */
+const detaljer = document.querySelector(".arr-detaljer");
+if (detaljer) {
+  const kort = detaljer.querySelectorAll(".arr-kort");
 
-      if (kortSted) {
-        kortSted.innerHTML = "<strong>Sted:</strong> " + (ev.venue || "");
-      }
+  if (kort.length === 4) {
+    // STED
+    kort[0].innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
 
-      if (kortDato && ev.event_date) {
-        const dato = ev.event_date
-          .split("T")[0]
-          .split("-")
-          .reverse()
-          .join(".");
-        kortDato.innerHTML = "<strong>Dato:</strong> " + dato;
-      }
+    // DATO – DD.MM.YYYY
+    const dato = ev.event_date
+      ? ev.event_date.split("T")[0].split("-").reverse().join(".")
+      : "";
+    kort[1].innerHTML = `<strong>Dato:</strong> ${dato}`;
 
-      if (kortTid && ev.event_time) {
-        const tid = ev.event_time.slice(0, 5);
-        kortTid.innerHTML = "<strong>Tid:</strong> " + tid;
-      }
+    // TID – HH:MM
+    const tid = ev.event_time ? ev.event_time.slice(0, 5) : "";
+    kort[2].innerHTML = `<strong>Tid:</strong> ${tid}`;
 
-      if (kortPris) {
-        kortPris.innerHTML = "<strong>Pris:</strong> " + (ev.price || "") + ",-";
-      }
-
+    // PRIS
+    kort[3].innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
+  }
+}
       /* ===== BESKRIVELSE ===== */
       const textEl = document.querySelector(".arr-text");
       if (textEl) {
