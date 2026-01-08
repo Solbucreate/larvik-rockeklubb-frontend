@@ -276,100 +276,69 @@ function toggleMenu(){ document.getElementById("dropdownMenu").classList.toggle(
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
-(function () {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("eventId");
   if (!eventId) return;
 
   fetch(`${API_BASE}/api/events/${eventId}`)
-    .then(res => res.json().then(data => ({ ok: res.ok, data })))
-    .then(({ ok, data: ev }) => {
-      if (!ok || !ev) return;
+    .then(res => res.json())
+    .then(ev => {
+      if (!ev) return;
 
-      /* =========================
-         1. ARTIST / TITTEL (kun én)
-      ========================= */
+      /* ===== TITTEL ===== */
       const titleEl = document.querySelector(".arr-title");
       if (titleEl) titleEl.textContent = ev.title || "";
 
-      /* =========================
-         2. BILDE (fra /uploads)
-      ========================= */
+      /* ===== BILDE ===== */
       const img = document.querySelector("main.arrangement img");
       let imageSrc = ev.image || "";
-
       if (imageSrc.startsWith("/")) {
         imageSrc = `${API_BASE}${imageSrc}`;
       }
-
       if (img && imageSrc) {
         img.src = imageSrc;
         img.alt = ev.title || "";
         img.style.display = "block";
-      } else if (img) {
-        img.style.display = "none";
       }
 
-      /* =========================
-         3. SPOTIFY (kun hvis aktiv)
-      ========================= */
-      const spotify = document.querySelector(".spotify-link");
-      if (spotify && ev.spotify_enabled && ev.spotify_url) {
-        spotify.href = ev.spotify_url;
-        spotify.style.display = "inline-block";
-      } else if (spotify) {
-        spotify.style.display = "none";
-      }
-
-      /* =========================
-         4. INFO-KORT (samme font)
-      ========================= */
+      /* ===== INFO-KORT ===== */
       const kort = document.querySelectorAll(".arr-kort");
 
-if (kort.length >= 4) {
-  // Sted
-  kort[0].innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
+      if (kort.length === 4) {
+        // STED
+        kort[0].innerHTML = `<strong>Sted:</strong> ${ev.venue || ""}`;
 
-  // Dato
-  const dato = ev.event_date
-    ? new Date(ev.event_date).toLocaleDateString("no-NO", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      })
-    : "";
-  kort[1].innerHTML = `<strong>Dato:</strong> ${dato}`;
+        // DATO (DD.MM.YYYY)
+        const dato = ev.event_date
+          ? ev.event_date.split("T")[0].split("-").reverse().join(".")
+          : "";
+        kort[1].innerHTML = `<strong>Dato:</strong> ${dato}`;
 
-  // Tid
-  const tid = ev.event_time ? String(ev.event_time).slice(0, 5) : "";
-  kort[2].innerHTML = `<strong>Tid:</strong> ${tid}`;
+        // TID (HH:MM)
+        const tid = ev.event_time ? ev.event_time.slice(0, 5) : "";
+        kort[2].innerHTML = `<strong>Tid:</strong> ${tid}`;
 
-  // Pris
-  kort[3].innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
-}
-      /* =========================
-         5. BESKRIVELSE
-      ========================= */
+        // PRIS
+        kort[3].innerHTML = `<strong>Pris:</strong> ${ev.price || ""},-`;
+      }
+
+      /* ===== BESKRIVELSE ===== */
       const textEl = document.querySelector(".arr-text");
       if (textEl) {
         textEl.textContent = ev.description || "";
-        textEl.style.display = ev.description ? "block" : "none";
       }
 
-      /* =========================
-         6. KJØP BILLETT
-      ========================= */
+      /* ===== KJØP BILLETT ===== */
       const buyBtn = document.querySelector(".billett-knapp");
       if (buyBtn) {
         buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
-        buyBtn.style.display = "inline-block";
       }
     })
-    .catch(err => {
-      console.error("Arrangement load error:", err);
-    });
-})();
+    .catch(() => {});
+});
 </script>
+
 
 
 </body>
