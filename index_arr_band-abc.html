@@ -254,7 +254,7 @@ html{overflow-y:scroll;}
   <!-- FLYTENDE BUNN -->
   <div class="arr-content">
     <p class="arr-text"></p>
-    <a class="billett-knapp">KJØP BILLETT</a>
+    <a class="billett-knapp" href="#">KJØP BILLETT</a>
   </div>
 
 </main>
@@ -325,14 +325,11 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
       // Kjøp billett / utsolgt
       const buyBtn = document.querySelector("main.arrangement .billett-knapp");
-      const soldOutText = document.querySelector(".utsolgt-tekst");
 
-      if (ev.max_tickets !== null && ev.sold >= ev.max_tickets) {
-        if (buyBtn) buyBtn.style.display = "none";
-        if (soldOutText) soldOutText.style.display = "block";
-      } else {
-        if (buyBtn) buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
-      }
+if (buyBtn) {
+  buyBtn.href = `index_kjop_billett.html?eventId=${ev.id}`;
+  buyBtn.style.display = "inline-block";
+}
 
     })
     .catch(() => {});
