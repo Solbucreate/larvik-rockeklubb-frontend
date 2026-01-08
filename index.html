@@ -333,8 +333,10 @@ fetch(`${API_BASE}/api/events`)
     box.innerHTML = "";
 
     events.forEach(e => {
-      const imageSrc = e.image || e.image_url || "";
-      const dato = formatDato(e.date); // ✅ riktig felt fra backend
+      let imageSrc = e.image || "";
+    if (imageSrc && !imageSrc.startsWith("http")) {
+    imageSrc = `${API_BASE}/${imageSrc.replace(/^\/+/, "")}`;}
+    const dato = formatDato(e.event_date); // ✅ riktig felt fra backend
 
       box.innerHTML += `
         <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
