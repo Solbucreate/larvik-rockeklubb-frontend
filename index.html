@@ -316,8 +316,14 @@ function toggleMenu(){
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
 function formatDato(datoStr) {
+  if (!datoStr) return "";
   const d = new Date(datoStr);
-  return d.toLocaleDateString("no-NO", { day: "numeric", month: "long", year: "numeric" });
+  if (isNaN(d)) return "";
+  return d.toLocaleDateString("no-NO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 }
 
 fetch(`${API_BASE}/api/events`)
@@ -327,22 +333,25 @@ fetch(`${API_BASE}/api/events`)
     box.innerHTML = "";
 
     events.forEach(e => {
-  box.innerHTML += `
-    <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
-      <img src="${e.image}" alt="${e.title}">
-      <div class="arrangement-info">
-        <h3>${e.title} / ${e.venue}</h3>
-        <p>${formatDato(e.event_date)} | ${e.city}</p>
-      </div>
-    </a>
-  `;
-});
+      const imageSrc = e.image || e.image_url || "";
+      const dato = formatDato(e.date); // ✅ riktig felt fra backend
 
+      box.innerHTML += `
+        <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
+          ${imageSrc ? `<img src="${imageSrc}" alt="${e.title}">` : ""}
+          <div class="arrangement-info">
+            <h3>${e.title || ""} / ${e.venue || ""}</h3>
+            <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
+          </div>
+        </a>
+      `;
+    });
   })
   .catch(() => {
     const box = document.getElementById("events");
     if (box) box.innerHTML = "<p>Kunne ikke laste arrangement.</p>";
   });
 </script>
+
 </body>
 </html>
