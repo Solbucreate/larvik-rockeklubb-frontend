@@ -280,14 +280,30 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
     .then(({ ok, data: ev }) => {
       if (!ok || !ev) return;
 
+      // Artist / tittel
+      const titleEl = document.querySelector(".arr-title");
+      if (titleEl) {
+        titleEl.textContent = ev.title || "";
+      }
+
       // Bilde
       const img = document.querySelector("main.arrangement img");
-      if (img) { img.src = ev.image; img.alt = ev.title; }
+      let imageSrc = ev.image || "";
+
+      if (imageSrc.startsWith("/")) {
+        imageSrc = API_BASE + imageSrc;
+      }
+
+      if (img && imageSrc) {
+        img.src = imageSrc;
+        img.alt = ev.title || "";
+        img.style.display = "block";
+      }
 
       // Spotify
       const spotify = document.querySelector("main.arrangement .spotify-link");
-      if (spotify && ev.spotify) {
-        spotify.href = ev.spotify;
+      if (spotify && ev.spotify_url) {
+        spotify.href = ev.spotify_url;
         spotify.style.display = "block";
       } else if (spotify) {
         spotify.style.display = "none";
@@ -303,14 +319,14 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
         }
 
         if (label.includes("dato")) {
-          const dato = new Date(ev.date).toLocaleDateString("no-NO", {
+          const dato = new Date(ev.event_date).toLocaleDateString("no-NO", {
             day: "numeric", month: "long", year: "numeric"
           });
           k.innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
         }
 
         if (label.includes("tid")) {
-          const t = ev.time ? String(ev.time).slice(0,5) : "";
+          const t = ev.time ? String(ev.event_time).slice(0,5) : "";
           k.innerHTML = `<strong>Tid:</strong>&nbsp;${t}`;
         }
 
@@ -322,6 +338,13 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       // Skjul første <p>
       const paras = document.querySelectorAll("main.arrangement p");
       if (paras[0]) paras[0].style.display = "none";
+
+      // Beskrivelse / info
+      const textEl = document.querySelector(".arr-text");
+      if (textEl) {
+        textEl.textContent = ev.description || "";
+        textEl.style.display = ev.description ? "block" : "none";
+      }
 
       // Kjøp billett / utsolgt
       const buyBtn = document.querySelector("main.arrangement .billett-knapp");
