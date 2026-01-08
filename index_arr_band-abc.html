@@ -320,7 +320,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
         if (label.includes("dato")) {
           const dato = new Date(ev.date).toLocaleDateString("no-NO", {
-            day: "numeric", month: "long", year: "numeric"
+            day: "numeric", month: "numeric", year: "numeric"
           });
           k.innerHTML = `<strong>Dato:</strong>&nbsp;${dato}`;
         }
