@@ -254,6 +254,7 @@ html{overflow-y:scroll;}
   <!-- FLYTENDE BUNN -->
   <div class="arr-content">
     <p class="arr-text"></p>
+    <div style="height:30px;"></div>
     <a class="billett-knapp">KJØP BILLETT</a>
   </div>
 
@@ -309,9 +310,6 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
         spotify.style.display = "none";
       }
 
-
-
-
       // Kort: sted/dato/tid/pris
       const kort = document.querySelectorAll("main.arrangement .arr-kort");
       kort.forEach(k => {
@@ -345,7 +343,7 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       // Beskrivelse / info
       const textEl = document.querySelector(".arr-text");
       if (textEl) {
-        textEl.textContent = ev.description || "";
+        textEl.innerHTML = (ev.description || "").replace(/\n/g, "<br><br>");
         textEl.style.display = ev.description ? "block" : "none";
       }
 
