@@ -308,6 +308,9 @@ footer {
 </footer>
 
 <script>
+fetch("https://larvik-rockeklubb-backend.onrender.com/api/events")
+  .catch(() => {});
+
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
 fetch(`${API_BASE}/api/events`)
