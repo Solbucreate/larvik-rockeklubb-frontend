@@ -254,7 +254,7 @@ html{overflow-y:scroll;}
   <!-- FLYTENDE BUNN -->
   <div class="arr-content">
     <p class="arr-text"></p>
-    <div style="height:30px;"></div>
+    <div style="height:55px;"></div>
     <a class="billett-knapp">KJØP BILLETT</a>
   </div>
 
@@ -343,7 +343,9 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       // Beskrivelse / info
       const textEl = document.querySelector(".arr-text");
       if (textEl) {
-        textEl.innerHTML = (ev.description || "").replace(/\n/g, "<br><br>");
+        textEl.textContent = ev.description || "";
+        textEl.style.whiteSpace = "pre-line";
+
         textEl.style.display = ev.description ? "block" : "none";
       }
 
