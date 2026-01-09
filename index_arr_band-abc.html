@@ -302,12 +302,13 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
       // Spotify
       const spotify = document.querySelector(".spotify-link");
-      if (spotify && ev.spotify_enabled && ev.spotify_url) {
-        spotify.href = ev.spotify_url;
+      if (spotify && ev.spotify) {
+        spotify.href = ev.spotify;
         spotify.style.display = "inline-block";
       } else if (spotify) {
         spotify.style.display = "none";
       }
+
 
 
 
