@@ -309,44 +309,34 @@ footer {
 </footer>
 
 <script>
-fetch("https://larvik-rockeklubb-backend.onrender.com/api/events")
-  .catch(() => {});
-
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
 fetch(`${API_BASE}/api/events`)
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("API-feil");
+    return res.json();
+  })
   .then(events => {
     const box = document.getElementById("events");
     box.innerHTML = "";
 
     events.forEach(e => {
+      const dato = e.date
+        ? new Date(e.date).toLocaleDateString("no-NO", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          })
+        : "";
 
-      // --- FINN DATOFELT SOM FAKTISK FINNES ---
-      const rawDate =
-        e.event_date ||
-        e.date ||
-        e.eventDate ||
-        "";
-
-      // --- FORMAT: DD.MM.YYYY ---
-      let dato = "";
-      if (rawDate) {
-        dato = rawDate.split("T")[0].split("-").reverse().join(".");
-      }
-
-      // --- BILDE ---
-      let imageSrc = e.image || "";
-      if (imageSrc.startsWith("/")) {
-        imageSrc = `${API_BASE}${imageSrc}`;
-      }
+      const imageSrc = e.image || "";
 
       box.innerHTML += `
         <a class="arrangement" href="index_arr_band-abc.html?eventId=${e.id}">
-          ${imageSrc ? `<img src="${imageSrc}" alt="${e.title}">` : ""}
+          <img src="${imageSrc}" alt="${e.title}">
           <div class="arrangement-info">
-            <h3>${e.title || ""} / ${e.venue || ""}</h3>
-            <p>${dato}${dato && e.city ? " | " : ""}${e.city || ""}</p>
+            <h3>${e.title} / ${e.venue}</h3>
+            <p>${dato}${dato && e.city ? " | " : ""}${e.city}</p>
           </div>
         </a>
       `;
@@ -354,9 +344,10 @@ fetch(`${API_BASE}/api/events`)
   })
   .catch(() => {
     const box = document.getElementById("events");
-    if (box) box.innerHTML = "<p>Kunne ikke laste arrangement.</p>";
+    box.innerHTML = "<p>Kunne ikke laste arrangement.</p>";
   });
 </script>
+
 
 </body>
 </html>
