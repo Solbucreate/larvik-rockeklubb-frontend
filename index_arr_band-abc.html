@@ -301,13 +301,14 @@ const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
       }
 
       // Spotify
-      const spotify = document.querySelector("main.arrangement .spotify-link");
-      if (spotify && ev.spotify_url) {
+      const spotify = document.querySelector(".spotify-link");
+      if (spotify && ev.spotify_enabled && ev.spotify_url) {
         spotify.href = ev.spotify_url;
-        spotify.style.display = "block";
+        spotify.style.display = "inline-block";
       } else if (spotify) {
         spotify.style.display = "none";
       }
+
 
 
       // Kort: sted/dato/tid/pris
