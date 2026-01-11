@@ -3,7 +3,7 @@
   "billettnr": { "top": "18px", "left": "18px", "fontSize": "14px" },
   "navn":      { "top": "100px", "left": "18px", "fontSize": "14px" },
   "pris":      { "top": "120px", "left": "18px", "fontSize": "14px" },
-  "dato":      { "top": "175px","left": "18px", "fontSize": "14px" },
+  "dato":      { "top": "160px","left": "18px", "fontSize": "14px" },
 
   "band":      { "top": "25px", "left": "50%", "fontSize": "30px" },
   "tour":      { "top": "70px", "left": "50%", "fontSize": "25px" },
