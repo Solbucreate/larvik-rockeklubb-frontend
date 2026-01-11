@@ -12,6 +12,6 @@
   "reftext":   { "top": "205px","left": "50%", "fontSize": "12px" },
 
   "eventid":   { "top": "18px", "right": "80px", "fontSize": "14px" },
-  "qr":        { "top": "65px", "right": "50px" },
+  "qr":        { "top": "65px", "right": "45px" },
   "site":      { "top": "198px","right": "15px", "fontSize": "13px" }
 }
