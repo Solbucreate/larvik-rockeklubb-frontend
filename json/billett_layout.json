@@ -6,7 +6,7 @@
   "dato":      { "top": "200px","left": "18px", "fontSize": "14px" },
 
   "band":      { "top": "25px", "left": "50%", "fontSize": "30px" },
-  "tour":      { "top": "80px", "left": "50%", "fontSize": "24px" },
+  "tour":      { "top": "85px", "left": "50%", "fontSize": "25px" },
   "venue":     { "top": "120px","left": "50%", "fontSize": "22px" },
   "date":      { "top": "160px","left": "50%", "fontSize": "20px" },
   "reftext":   { "top": "205px","left": "50%", "fontSize": "12px" },
