@@ -262,14 +262,6 @@ font-display: swap; }
   font-size: 28px;
   margin-bottom: 30px;}
 
-body.pdf-mode header,
-body.pdf-mode nav,
-body.pdf-mode footer,
-body.pdf-mode .burger,
-body.pdf-mode .social-icons {
-  display: none !important;
-}
-
 </style>
 </head>
 <body>
@@ -321,16 +313,6 @@ function toggleMenu(){
   document.getElementById("dropdownMenu").classList.toggle("show");
 }
 </script>
-
-<script>
-  (function () {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("pdf") === "1") {
-      document.documentElement.classList.add("pdf-mode");
-    }
-  })();
-</script>
-
 
 <!-- PDF / Bilde / QR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
