@@ -5,7 +5,7 @@
   "pris":      { "top": "120px", "left": "18px", "fontSize": "14px" },
   "dato":      { "top": "200px","left": "18px", "fontSize": "14px" },
 
-  "band":      { "top": "40px", "left": "50%", "fontSize": "28px" },
+  "band":      { "top": "100px", "left": "50%", "fontSize": "28px" },
   "tour":      { "top": "80px", "left": "50%", "fontSize": "24px" },
   "venue":     { "top": "120px","left": "50%", "fontSize": "22px" },
   "date":      { "top": "160px","left": "50%", "fontSize": "20px" },
