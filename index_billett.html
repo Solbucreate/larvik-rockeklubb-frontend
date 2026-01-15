@@ -450,18 +450,30 @@ async function applyLayout() {
 const pdfButton = document.querySelector("button");
 
 if (pdfButton) {
-  pdfButton.addEventListener("click", () => {
-    if (!orderId) {
-      alert("Mangler orderId");
+  pdfButton.addEventListener("click", async () => {
+    const billett = document.querySelector(".ticket");
+    if (!billett) {
+      alert("Fant ingen billett");
       return;
     }
 
-    window.open(
-      `${API_BASE}/api/pdf/ticket/${orderId}`,
-      "_blank"
-    );
+    const canvas = await html2canvas(billett, {
+      scale: 2,
+      useCORS: true
+    });
+
+    const img = canvas.toDataURL("image/png");
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF("landscape", "pt", "a4");
+    const w = pdf.internal.pageSize.getWidth();
+    const h = (canvas.height * w) / canvas.width;
+
+    pdf.addImage(img, "PNG", 20, 40, w - 40, h);
+    pdf.save("billett.pdf");
   });
 }
+
 </script>
 
 
