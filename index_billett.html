@@ -310,8 +310,7 @@ font-display: swap; }
   
 <script>
 function toggleMenu(){
-  document.getElementById("dropdownMenu").classList.toggle("show");
-}
+  document.getElementById("dropdownMenu").classList.toggle("show");}
 </script>
 
 <!-- PDF / Bilde / QR -->
@@ -444,7 +443,7 @@ async function applyLayout() {
   });
 }
 
-const pdfButton = document.querySelector("button");
+const pdfButton = document.getElementById("pdfBtn");
 
 if (pdfButton) {
   pdfButton.addEventListener("click", () => {
@@ -453,15 +452,17 @@ if (pdfButton) {
       return;
     }
 
-    window.open(
-      `${API_BASE}/api/pdf/ticket/${orderId}`,
-      "_blank"
-    );
+    // Vis loader (du har allerede overlay)
+    const overlay = document.getElementById("loadingOverlay");
+    if (overlay) overlay.style.display = "flex";
+
+    // Tving nedlasting – IKKE popup
+    window.location.href =
+      `${API_BASE}/api/pdf/ticket/${orderId}`;
   });
 }
+
 </script>
-
-
 </head>
 </body>
 </html>
