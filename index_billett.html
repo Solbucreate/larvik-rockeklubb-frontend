@@ -310,15 +310,14 @@ font-display: swap; }
   
 <script>
 function toggleMenu(){
-  document.getElementById("dropdownMenu").classList.toggle("show");}
+  document.getElementById("dropdownMenu").classList.toggle("show");
+}
 </script>
 
 <!-- PDF / Bilde / QR -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="./qr.js"></script>
+
 <script>
 const API_BASE = "https://larvik-rockeklubb-backend.onrender.com";
 
@@ -327,7 +326,6 @@ const orderId = params.get("orderId");
 
 const statusBox = document.getElementById("statusBox");
 const billettContainer = document.getElementById("billetter");
-const pdfButton = document.getElementById("pdfBtn");
 
 if (!orderId) {
   statusBox.style.display = "block";
@@ -340,10 +338,10 @@ if (!orderId) {
 async function loadTickets(orderId) {
   try {
     const res = await fetch(`${API_BASE}/api/tickets/order/${orderId}`);
-    if (!res.ok) throw new Error("API-feil");
+    if (!res.ok) throw new Error("API-feil ved henting av billetter");
 
     const data = await res.json();
-    if (data.status !== "ok") throw new Error("Ugyldig respons");
+    if (!data || data.status !== "ok") throw new Error("Ugyldig respons");
 
     const event = data.event;
     const order = data.order || {};
@@ -355,49 +353,62 @@ async function loadTickets(orderId) {
     const dateFormatted = new Date(event.date).toLocaleDateString("no-NO");
 
     tickets.forEach((ticket, i) => {
-      const navn = ticket.name || order.buyer_name || "";
+      const navn =
+        ticket.name ||
+        order.buyer_name ||
+        order.name ||
+        "";
 
       const b = document.createElement("div");
       b.className = "billett";
 
       b.innerHTML = `
-        <div class="ticket">
-          <div class="text" data-field="billettnr">
-            <strong>Billettnr:</strong> ${ticket.ticket_code}
-          </div>
 
-          <div class="text" data-field="navn">
-            <strong>Navn:</strong> ${navn}
-          </div>
+      <div class="ticket">
 
-          <div class="text" data-field="pris">
-            <strong>Pris:</strong> ${ticket.price}
-          </div>
+        <div class="text" data-field="billettnr">
+          <span style="font-weight:700;">Billettnr:</span>
+          <span style="font-weight:400;"> ${ticket.ticket_code}</span>
+        </div>
 
-          <div class="text" data-field="dato">
-            <strong>Dato:</strong> ${today}
-          </div>
+        <div class="text" data-field="navn">
+          <span style="font-weight:700;">Navn:</span>
+          <span style="font-weight:400;"> ${navn}</span>
+        </div>
 
-          <div class="text midt" data-field="band">${event.title}</div>
-          <div class="text midt" data-field="tour">${event.ticket_text || ""}</div>
-          <div class="text midt" data-field="venue">${event.venue}</div>
-          <div class="text midt" data-field="date">${dateFormatted} – ${event.time}</div>
+        <div class="text" data-field="pris">
+          <span style="font-weight:700;">Pris:</span>
+          <span style="font-weight:400;"> ${ticket.price}</span>
+        </div>
 
-          <div class="text midt reftext">
-            Kjøpt billett refunderes ikke.
-          </div>
+        <div class="text" data-field="dato">
+          <span style="font-weight:700;">Dato:</span>
+          <span style="font-weight:400;"> ${today}</span>
+        </div>
 
-          <div class="text" data-field="eventid">
-            <strong>Event-ID:</strong> ${event.id}
-          </div>
+        <div class="text midt" data-field="band">${event.title}</div>
+        <div class="text midt" data-field="tour">${event.ticket_text}</div>
+        <div class="text midt" data-field="venue">${event.venue}</div>
+        <div class="text midt" data-field="date">${dateFormatted} – ${event.time}</div>
 
-          <div class="text site">www.larvik-rockeklubb.no</div>
-          <div class="qr" id="qr-${i}"></div>
+        <div class="text midt reftext" data-field="reftext">
+          Kjøpt billett refunderes ikke.
+        </div>
+
+        <div class="text" data-field="eventid">
+          <span style="font-weight:700;">Event-ID:</span>
+          <span style="font-weight:400;"> ${event.id}</span>
+        </div>
+
+        <div class="text" data-field="site">www.larvik-rockeklubb.no</div>
+        <div class="qr" data-field="qr" id="qr-${i}"></div>
+
         </div>
       `;
 
       billettContainer.appendChild(b);
 
+      // ✅ FIX: QR-koden skal være NØYAKTIG samme som billettnummeret
       new QRCode(document.getElementById(`qr-${i}`), {
         text: ticket.ticket_code,
         width: 120,
@@ -410,51 +421,46 @@ async function loadTickets(orderId) {
   } catch (e) {
     statusBox.style.display = "block";
     statusBox.style.background = "#dc3545";
-    statusBox.textContent = "Feil ved lasting av billett.";
+    statusBox.textContent = "En feil oppstod ved lasting av billett.";
   }
 }
 
 async function applyLayout() {
-  try {
-    const res = await fetch("json/billett_layout.json");
-    const layout = await res.json();
+  const res = await fetch("json/billett_layout.json");
+  const layout = await res.json();
 
-    document.querySelectorAll("[data-field]").forEach(el => {
-      const cfg = layout[el.dataset.field];
-      if (!cfg) return;
+  document.querySelectorAll("[data-field]").forEach(el => {
+    const cfg = layout[el.dataset.field];
+    if (!cfg) return;
 
-      if (cfg.top) el.style.top = cfg.top;
-      if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
+    if (cfg.top) el.style.top = cfg.top;
+    if (cfg.fontSize) el.style.fontSize = cfg.fontSize;
 
-      if (!el.classList.contains("midt")) {
-        if (cfg.left) el.style.left = cfg.left;
-        if (cfg.right) el.style.right = cfg.right;
-      }
-    });
-  } catch {}
+    // kun IKKE-midt felt kan få left/right
+    if (!el.classList.contains("midt")) {
+      if (cfg.left) el.style.left = cfg.left;
+      if (cfg.right) el.style.right = cfg.right;
+    }
+  });
 }
 
+const pdfButton = document.querySelector("button");
+
 if (pdfButton) {
-  pdfButton.addEventListener("click", async () => {
-    const { jsPDF } = window.jspdf;
-    const wrapper = document.getElementById("billetter-wrapper");
+  pdfButton.addEventListener("click", () => {
+    if (!orderId) {
+      alert("Mangler orderId");
+      return;
+    }
 
-    const canvas = await html2canvas(wrapper, {
-      scale: 2,
-      useCORS: true
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
-    pdf.save("billett.pdf");
+    window.open(
+      `${API_BASE}/api/pdf/ticket/${orderId}`,
+      "_blank"
+    );
   });
 }
 </script>
+
 
 </head>
 </body>
