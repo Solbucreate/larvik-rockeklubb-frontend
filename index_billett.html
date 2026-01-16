@@ -507,9 +507,19 @@ if (pdfButton) {
 
   pdf.save("billetter.pdf");
 });
-
-
 }
+
+// SEND PDF TIL BACKEND FOR E-POST
+const pdfBlob = pdf.output("blob");
+
+const formData = new FormData();
+formData.append("pdf", pdfBlob, "billetter.pdf");
+formData.append("orderId", orderId);
+
+await fetch(`${API_BASE}/api/mail/send-tickets`, {
+  method: "POST",
+  body: formData
+});
 
 </script>
 
