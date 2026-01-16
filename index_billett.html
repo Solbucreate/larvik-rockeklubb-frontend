@@ -476,7 +476,7 @@ if (pdfButton) {
 
   const ticketW = 180;        // billettbredde
   const spacingY = 20;        // luft mellom billetter
-  const startX = (pageW - ticketW) / 3;
+  const startX = (pageW - ticketW) / 2;
 
   let y = 20;                 // topp-margin
   let ticketsOnPage = 0;
@@ -493,7 +493,7 @@ if (pdfButton) {
     const ticketH = ticketW / ratio;
 
     // NY SIDE hvis det ikke er plass til neste billett
-    if (ticketsOnPage === 2 || y + ticketH > pageH - 20) {
+    if (ticketsOnPage === 4 || y + ticketH > pageH - 20) {
       pdf.addPage();
       y = 20;
       ticketsOnPage = 0;
