@@ -463,16 +463,20 @@ if (pdfButton) {
     });
 
     const img = canvas.toDataURL("image/jpeg", 1.0);
-    const { jsPDF } = window.jspdf;
+const { jsPDF } = window.jspdf;
 
-    const pdf = new jsPDF("landscape", "pt", "a4");
-    const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height * w) / canvas.width;
+const pdf = new jsPDF("landscape", "pt", "a4");
 
-    pdf.addImage(img, "JPEG", 20, 40, w - 40, h);
-    pdf.save("billett.pdf");
-  });
-}
+const pageW = pdf.internal.pageSize.getWidth();
+const pageH = pdf.internal.pageSize.getHeight();
+
+const imgW = pageW - 40;
+const imgH = (canvas.height * imgW) / canvas.width;
+const finalH = Math.min(imgH, pageH - 40);
+
+pdf.addImage(img, "JPEG", 20, 20, imgW, finalH, undefined, "FAST");
+pdf.save("billett.pdf");
+
 
 </script>
 
