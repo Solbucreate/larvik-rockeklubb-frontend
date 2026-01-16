@@ -462,7 +462,7 @@ if (pdfButton) {
       useCORS: true
     });
 
-    const img = canvas.toDataURL("image/jpeg", 1.0);
+     const img = canvas.toDataURL("image/jpeg", 1.0);
 const { jsPDF } = window.jspdf;
 
 const pdf = new jsPDF("landscape", "pt", "a4");
@@ -477,6 +477,8 @@ const finalH = Math.min(imgH, pageH - 40);
 pdf.addImage(img, "JPEG", 20, 20, imgW, finalH, undefined, "FAST");
 pdf.save("billett.pdf");
 
+  });
+}
 
 </script>
 
