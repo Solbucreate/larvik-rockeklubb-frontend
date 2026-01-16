@@ -457,41 +457,46 @@ const pdfButton = document.querySelector("button");
 
 if (pdfButton) {
  pdfButton.addEventListener("click", async () => {
-  const ticket = document.querySelector(".billett");
-  if (!ticket) {
-    alert("Fant ingen billett");
+  const tickets = document.querySelectorAll(".billett");
+  if (!tickets.length) {
+    alert("Fant ingen billetter");
     return;
   }
 
-  const canvas = await html2canvas(ticket, {
-    scale: 2,
-    backgroundColor: "#ffffff",
-    useCORS: true
-  });
-
-  const img = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
-
-  const pageW = 297;
-  const pageH = 210;
-
-  const imgRatio = canvas.width / canvas.height;
-  const maxW = 240;   // ønsket billettbredde
-  const imgW = maxW;
-  const imgH = imgW / imgRatio;
-
-  const x = (pageW - imgW) / 2;
-  const y = (pageH - imgH) / 2;
-
   const pdf = new jsPDF({
     orientation: "landscape",
     unit: "mm",
     format: "a4"
   });
 
-  pdf.addImage(img, "PNG", x, y, imgW, imgH);
-  pdf.save("billett.pdf");
+  const pageW = 297;
+  const pageH = 210;
+  const targetW = 240; // billettbredde
+
+  for (let i = 0; i < tickets.length; i++) {
+    const canvas = await html2canvas(tickets[i], {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      useCORS: true
+    });
+
+    const img = canvas.toDataURL("image/png");
+
+    const ratio = canvas.width / canvas.height;
+    const imgW = targetW;
+    const imgH = imgW / ratio;
+
+    const x = (pageW - imgW) / 2;
+    const y = (pageH - imgH) / 2;
+
+    if (i > 0) pdf.addPage();
+    pdf.addImage(img, "PNG", x, y, imgW, imgH);
+  }
+
+  pdf.save("billetter.pdf");
 });
+
 }
 
 </script>
