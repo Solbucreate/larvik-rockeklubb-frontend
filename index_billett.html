@@ -459,28 +459,36 @@ if (pdfButton) {
   pdfButton.addEventListener("click", async () => {
   const source = document.getElementById("billetter-wrapper");
   if (!source) {
-    alert("Fant ingen billett");
+    alert("Fant ingen billetter");
     return;
   }
 
   const pdfOnly = document.getElementById("pdf-only");
   pdfOnly.innerHTML = "";
-  pdfOnly.appendChild(source.cloneNode(true));
+
+  const clone = source.cloneNode(true);
+
+  // 🔒 TVING REN PDF-VERSJON
+  clone.style.background = "#fff";
+  clone.style.boxShadow = "none";
+  clone.style.margin = "0";
+  clone.style.padding = "0";
+  clone.style.transform = "scale(0.85)";
+  clone.style.transformOrigin = "top left";
+
+  pdfOnly.appendChild(clone);
 
   const canvas = await html2canvas(pdfOnly, {
     scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    useCORS: true
   });
 
   const img = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
 
-  const pdfW = 260; // mindre billett
-  const marginX = (297 - pdfW) / 2; // luft på sidene
-
-  const imgRatio = canvas.height / canvas.width;
-  const pdfH = pdfW * imgRatio;
+  const pdfW = 297;
+  const pdfH = (canvas.height / canvas.width) * pdfW;
 
   const pdf = new jsPDF({
     orientation: "landscape",
@@ -488,13 +496,13 @@ if (pdfButton) {
     format: [pdfW, pdfH]
   });
 
-  pdf.addImage(img, "PNG", marginX, 10, pdfW, pdfH);
-  pdf.save("billett.pdf");
+  pdf.addImage(img, "PNG", 0, 0, pdfW, pdfH);
+  pdf.save("billetter.pdf");
 
   pdfOnly.innerHTML = "";
 });
-
 }
+
 </script>
 
 </head>
