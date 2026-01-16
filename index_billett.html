@@ -462,14 +462,14 @@ if (pdfButton) {
       useCORS: true
     });
 
-    const img = canvas.toDataURL("image/png");
+    const img = canvas.toDataURL("image/jpeg", 1.0);
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF("landscape", "pt", "a4");
     const w = pdf.internal.pageSize.getWidth();
     const h = (canvas.height * w) / canvas.width;
 
-    pdf.addImage(img, "PNG", 20, 40, w - 40, h);
+    pdf.addImage(img, "JPEG", 20, 40, w - 40, h);
     pdf.save("billett.pdf");
   });
 }
