@@ -302,6 +302,17 @@ font-display: swap; }
     <div class="actions">
       <button id="pdfBtn">LAST NED PDF</button>
     </div>
+
+    <!-- PDF ONLY – SKAL IKKE VISES -->
+<div id="pdf-only" style="
+  position:absolute;
+  left:-9999px;
+  top:0;
+  background:#fff;
+  padding:0;
+">
+</div>
+
   </main>
 
   <footer>
@@ -446,36 +457,41 @@ const pdfButton = document.querySelector("button");
 
 if (pdfButton) {
   pdfButton.addEventListener("click", async () => {
-    const wrapper = document.getElementById("billetter-wrapper");
-    if (!wrapper) {
-      alert("Fant ingen billett");
-      return;
-    }
+  const source = document.querySelector(".billett");
+  if (!source) {
+    alert("Fant ingen billett");
+    return;
+  }
 
-    const canvas = await html2canvas(wrapper, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#1a1a1a"
-    });
+  const pdfOnly = document.getElementById("pdf-only");
+  pdfOnly.innerHTML = "";
+  pdfOnly.appendChild(source.cloneNode(true));
 
-    const img = canvas.toDataURL("image/png");
-    const { jsPDF } = window.jspdf;
+  const canvas = await html2canvas(pdfOnly, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff"
+  });
 
-    const pdfW = 297;
-const imgRatio = canvas.height / canvas.width;
-const pdfH = pdfW * imgRatio;
+  const img = canvas.toDataURL("image/png");
+  const { jsPDF } = window.jspdf;
 
-const pdf = new jsPDF({
-  orientation: "landscape",
-  unit: "mm",
-  format: [pdfW, pdfH]
+  const pdfW = 297;
+  const imgRatio = canvas.height / canvas.width;
+  const pdfH = pdfW * imgRatio;
+
+  const pdf = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: [pdfW, pdfH]
+  });
+
+  pdf.addImage(img, "PNG", 0, 0, pdfW, pdfH);
+  pdf.save("billett.pdf");
+
+  pdfOnly.innerHTML = "";
 });
 
-
-pdf.addImage(img, "PNG", 0, 0, pdfW, pdfH);
-
-    pdf.save("billett.pdf");
-  });
 }
 </script>
 
