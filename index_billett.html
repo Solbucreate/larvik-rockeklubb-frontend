@@ -464,15 +464,22 @@ if (pdfButton) {
   }
 
   const { jsPDF } = window.jspdf;
+
   const pdf = new jsPDF({
-    orientation: "landscape",
+    orientation: "portrait",   // A4 STÅENDE
     unit: "mm",
     format: "a4"
   });
 
-  const pageW = 297;
-  const pageH = 210;
-  const targetW = 240; // billettbredde
+  const pageW = 210;
+  const pageH = 297;
+
+  const ticketW = 180;        // billettbredde
+  const spacingY = 20;        // luft mellom billetter
+  const startX = (pageW - ticketW) / 3;
+
+  let y = 20;                 // topp-margin
+  let ticketsOnPage = 0;
 
   for (let i = 0; i < tickets.length; i++) {
     const canvas = await html2canvas(tickets[i], {
@@ -482,20 +489,25 @@ if (pdfButton) {
     });
 
     const img = canvas.toDataURL("image/png");
-
     const ratio = canvas.width / canvas.height;
-    const imgW = targetW;
-    const imgH = imgW / ratio;
+    const ticketH = ticketW / ratio;
 
-    const x = (pageW - imgW) / 2;
-    const y = (pageH - imgH) / 2;
+    // NY SIDE hvis det ikke er plass til neste billett
+    if (ticketsOnPage === 2 || y + ticketH > pageH - 20) {
+      pdf.addPage();
+      y = 20;
+      ticketsOnPage = 0;
+    }
 
-    if (i > 0) pdf.addPage();
-    pdf.addImage(img, "PNG", x, y, imgW, imgH);
+    pdf.addImage(img, "PNG", startX, y, ticketW, ticketH);
+
+    y += ticketH + spacingY;
+    ticketsOnPage++;
   }
 
   pdf.save("billetter.pdf");
 });
+
 
 }
 
