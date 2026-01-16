@@ -467,7 +467,12 @@ if (pdfButton) {
       format: "a4"
     });
 
-    pdf.addImage(img, "PNG", 0, 0, 297, 210);
+    const pdfW = 297;
+const imgRatio = canvas.height / canvas.width;
+const pdfH = pdfW * imgRatio;
+
+pdf.addImage(img, "PNG", 0, 0, pdfW, pdfH);
+
     pdf.save("billett.pdf");
   });
 }
