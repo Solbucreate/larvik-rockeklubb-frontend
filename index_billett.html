@@ -476,7 +476,9 @@ if (pdfButton) {
   const img = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
 
-  const pdfW = 297;
+  const pdfW = 260; // mindre billett
+  const marginX = (297 - pdfW) / 2; // luft på sidene
+
   const imgRatio = canvas.height / canvas.width;
   const pdfH = pdfW * imgRatio;
 
@@ -486,7 +488,7 @@ if (pdfButton) {
     format: [pdfW, pdfH]
   });
 
-  pdf.addImage(img, "PNG", 0, 0, pdfW, pdfH);
+  pdf.addImage(img, "PNG", marginX, 10, pdfW, pdfH);
   pdf.save("billett.pdf");
 
   pdfOnly.innerHTML = "";
